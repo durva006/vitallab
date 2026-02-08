@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Dashboard — Vital Lab</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body data-page="dashboard">
+
+<header class="site-header">
+  <div class="brand">🩺 <strong>Vital Lab</strong></div>
+  <nav class="main-nav">
+    <a href="booking.html">Book Test</a>
+    <a href="reports.html">My Reports</a>
+    <a href="profile.html">Profile</a>
+    <a href="#" id="logoutBtn">Logout 🚪</a>
+  </nav>
+</header>
+
+<main class="page">
+  <section class="card wide-card">
+
+    <div style="display:flex;justify-content:space-between;align-items:center;">
+      <div>
+        <h1>Welcome, <span id="userDisplay">User</span> 👋</h1>
+        <p class="muted">Manage your bookings, reports and receipts from here.</p>
+      </div>
+
+      <button class="btn primary" onclick="location.href='booking.html'">
+        New Booking ➕
+      </button>
+    </div>
+
+    <!-- Stats Cards -->
+    <div id="stats" class="grid" style="margin-top:20px; gap:15px;">
+      
+      <div class="card" style="text-align:center; padding:16px;">
+        <div><i data-feather="calendar"></i></div>
+        <h2 id="totalBookings">0</h2>
+        <p>Your bookings</p>
+      </div>
+
+      <div class="card" style="text-align:center; padding:16px;">
+        <div><i data-feather="file-text"></i></div>
+        <h2 id="totalReports">0</h2>
+        <p>Your reports</p>
+      </div>
+
+      <div class="card" style="text-align:center; padding:16px;">
+        <div><i data-feather="credit-card"></i></div>
+        <h2>₹<span id="totalAmount">0</span></h2>
+        <p>Amount</p>
+      </div>
+
+    </div>
+
+    <!-- Recent Bookings -->
+    <h3 style="margin-top:25px;">Recent bookings</h3>
+    <div id="recentBookings" class="card" style="padding:12px;">
+      <p>No bookings yet. Book a test to get started.</p>
+    </div>
+
+  </section>
+</main>
+
+
+<script>
+// Show logged-in user name
+const user = JSON.parse(localStorage.getItem("loggedInUser"));
+if (user) {
+  document.getElementById("userDisplay").textContent = user.name || user.email;
+} else {
+  window.location.href = "login.html";
+}
+
+// Show recent bookings
+const bookings = JSON.parse(localStorage.getItem("bookings")) || [];
+const bookingList = document.getElementById("bookingList");
+
+if (bookings.length === 0) {
+  bookingList.innerHTML = "<p class='muted'>No bookings yet.</p>";
+} else {
+  bookingList.innerHTML = bookings
+    .slice(-5) // last 5 bookings
+    .map(b => `<li>${b.test} — ${b.date} at ${b.time}</li>`)
+    .join("");
+}
+</script>
+
+<script src="common.js"></script>
+</body>
+</html>

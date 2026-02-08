@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Sign Up — Vital Lab</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body data-page="signup">
+
+<header class="site-header">
+  <div class="brand">🩺 <strong>Vital Lab</strong></div>
+  <nav class="main-nav">
+    <a href="signup.html">Sign Up</a>
+    <a href="login.html" id="navLogin">Login</a>
+  </nav>
+</header>
+
+<main class="page">
+  <section class="card wide-card">
+    <h1>Create account ✍️</h1>
+    <p class="muted">Create your account to manage bookings, view reports and receipts.</p>
+
+    <form id="signupForm" class="grid-form">
+      <label>
+        Full name
+        <input type="text" id="signupName" placeholder="e.g., Priya Sharma" required>
+      </label>
+
+      <label>
+        Email
+        <input type="email" id="signupEmail" placeholder="you@domain.com" required>
+      </label>
+
+      <label>
+        Phone
+        <input type="tel" id="signupPhone" placeholder="+91 98765 43210">
+      </label>
+
+      <label>
+        Gender
+        <select id="signupGender">
+          <option value="">Select</option>
+          <option>Female</option>
+          <option>Male</option>
+          <option>Other</option>
+          <option>Prefer not to say</option>
+        </select>
+      </label>
+
+      <label style="grid-column:1 / -1">
+        Address
+        <textarea id="signupAddress" placeholder="Flat / building, street, city, pincode"></textarea>
+      </label>
+
+      <label>
+        Password
+        <input type="password" id="signupPassword" placeholder="Choose a secure password" required>
+      </label>
+
+      <div style="grid-column:1 / -1; text-align:right">
+        <button type="submit" class="btn primary">Create account</button>
+      </div>
+    </form>
+
+    <p class="muted">Already have an account? <a href="login.html">Login</a></p>
+  </section>
+</main>
+
+<script src="common.js"></script>
+<script>
+document.getElementById("signupForm").addEventListener("submit", async function(e) {
+  e.preventDefault();
+
+  const user = {
+    name: document.getElementById("signupName").value,
+    email: document.getElementById("signupEmail").value,
+    password: document.getElementById("signupPassword").value,
+    phone: document.getElementById("signupPhone").value,
+    gender: document.getElementById("signupGender").value,
+    address: document.getElementById("signupAddress").value
+  };
+
+  try {
+    const response = await fetch("http://localhost:8080/api/users/register", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(user)
+    });
+
+    if (response.ok) {
+      alert("🎉 Account created successfully!");
+      document.getElementById("signupForm").reset();
+      window.location.href = "login.html";
+    } else {
+      const err = await response.json();
+      alert("⚠️ Error: " + (err.message || "Unable to register."));
+    }
+  } catch (error) {
+    console.error("Network or server error:", error);
+    alert("🚨 Failed to connect to server.");
+  }
+});
+</script>
+
+</body>
+</html>

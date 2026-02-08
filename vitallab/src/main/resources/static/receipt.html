@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Receipt — Vital Lab</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body data-page="receipt">
+
+<header class="site-header">
+  <div class="brand">🩺 <strong>Vital Lab</strong></div>
+  <nav class="main-nav">
+    <a href="dashboard.html">Dashboard</a>
+    <a href="booking.html">Book Test</a>
+    <a href="reports.html">My Reports</a>
+    <a href="profile.html">Profile</a>
+  </nav>
+</header>
+
+<main class="page">
+  <section class="card narrow-card">
+    <h1>Receipt</h1>
+    <div id="receiptArea" class="muted"></div>
+    <div style="margin-top:14px; text-align:right">
+      <button id="downloadReceipt" class="btn secondary">Download Receipt</button>
+      <button onclick="location.href='dashboard.html'" class="btn primary">Back to Dashboard</button>
+    </div>
+  </section>
+</main>
+
+<script src="common.js"></script>
+</body>
+</html>
