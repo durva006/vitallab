@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Book Test — Vital Lab</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://unpkg.com/feather-icons"></script>
+</head>
+<body data-page="booking">
+
+<header class="site-header">
+  <div class="brand">🩺 <strong>Vital Lab</strong></div>
+  <nav class="main-nav">
+    <a href="dashboard.html">Dashboard</a>
+    <a href="reports.html">My Reports</a>
+    <a href="profile.html">Profile</a>
+    <a href="#" id="logoutLink" style="display:none">Logout 🚪</a>
+  </nav>
+</header>
+
+<main class="page">
+
+  <!-- Packages Section -->
+  <section>
+    <h2><i data-feather="package"></i> Health Check-Up Packages</h2>
+    <div class="grid" id="packageGrid"></div>
+  </section>
+
+  <!-- Booking Form -->
+  <section class="card wide-card">
+    <h1>Book a test 📅</h1>
+    <p class="muted">Provide patient information and choose a convenient slot.</p>
+
+    <form id="bookingForm" class="grid-form">
+      <label>Full name
+        <input type="text" id="patientName" required>
+      </label>
+
+      <label>Gender
+        <select id="patientGender">
+          <option value="">Select</option>
+          <option>Female</option>
+          <option>Male</option>
+          <option>Other</option>
+        </select>
+      </label>
+
+      <label>Phone
+        <input type="tel" id="patientPhone" required>
+      </label>
+
+      <label>Email
+        <input type="email" id="patientEmail">
+      </label>
+
+      <label style="grid-column:1 / -1">Address
+        <textarea id="patientAddress" placeholder="Flat / building, street, city, pincode" required></textarea>
+      </label>
+
+      <label>Test
+        <select id="testName" required></select>
+      </label>
+
+      <label>Date
+        <input type="date" id="testDate" required>
+      </label>
+
+      <label>Time
+        <input type="time" id="testTime" required>
+      </label>
+
+      <div style="grid-column:1 / -1; text-align:right">
+        <button type="submit" class="btn primary">Proceed to Payment</button>
+      </div>
+    </form>
+  </section>
+
+</main>
+
+<script>
+  // ensure user logged in
+  const user = JSON.parse(localStorage.getItem("loggedInUser"));
+  if (!user) { alert("Please login"); window.location.href = "login.html"; }
+
+  feather.replace();
+
+  const packages = [
+    { name: "Basic Health Check", price: 499, desc: "Includes CBC, BP, Blood Sugar, and BMI analysis." },
+    { name: "Advanced Full Body Check", price: 1999, desc: "CBC, LFT, KFT, Lipid Profile, Thyroid, Vitamin D & B12." },
+    { name: "Cardiac Care", price: 1299, desc: "ECG, Lipid Profile, BP Monitoring, Cholesterol, CRP test." },
+    { name: "Diabetes Care", price: 999, desc: "Fasting Sugar, HbA1c, Insulin Level, Kidney Function." },
+    { name: "Women’s Wellness", price: 1499, desc: "Hormone Panel, Thyroid, Vitamin D, CBC, Iron Studies." },
+    { name: "Thyroid Profile", price: 699, desc: "T3, T4, TSH levels to check thyroid function." },
+    { name: "Vitamin D Test", price: 499, desc: "Check Vitamin D deficiency and bone health." },
+    { name: "Lipid Profile", price: 799, desc: "Measures cholesterol and triglyceride levels." },
+    { name: "Liver Function Test (LFT)", price: 899, desc: "Assess liver enzymes and proteins." },
+    { name: "Kidney Function Test (KFT)", price: 899, desc: "Urea, Creatinine, Electrolytes for kidney health." }
+  ];
+
+  const packageGrid = document.getElementById("packageGrid");
+  packages.forEach(pkg => {
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.innerHTML = `<h3><i data-feather="clipboard"></i> ${pkg.name}</h3>
+      <p class="muted">${pkg.desc}</p>
+      <p><strong>₹${pkg.price}</strong></p>`;
+    packageGrid.appendChild(card);
+  });
+  feather.replace();
+
+  const testSelect = document.getElementById("testName");
+  packages.forEach(pkg => {
+    const option = document.createElement("option");
+    // value combines name & price so we can split later
+    option.value = `${pkg.name}|||${pkg.price}`;
+    option.textContent = `${pkg.name} — ₹${pkg.price}`;
+    testSelect.appendChild(option);
+  });
+
+  document.getElementById("bookingForm").addEventListener("submit", (e) => {
+    e.preventDefault();
+
+    const sel = document.getElementById("testName").value || '';
+    const [testName, price] = sel.split("|||");   // ✅ extract name & price
+
+    const bookingData = {
+      name: document.getElementById("patientName").value.trim(),
+      gender: document.getElementById("patientGender").value,
+      phone: document.getElementById("patientPhone").value.trim(),
+      email: document.getElementById("patientEmail").value.trim(),
+      address: document.getElementById("patientAddress").value.trim(),
+      testName: testName,
+      price: Number(price),   // ✅ correct price here
+      date: document.getElementById("testDate").value,
+      time: document.getElementById("testTime").value
+    };
+
+    sessionStorage.setItem("pendingBooking", JSON.stringify(bookingData));
+    window.location.href = "payment.html";
+  });
+
+</script>
+
+
+<script src="common.js"></script>
+</body>
+</html>
