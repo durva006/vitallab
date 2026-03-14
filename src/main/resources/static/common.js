@@ -1,270 +1,191 @@
-console.log("✅ common.js LOADED");
+/**
+ * VITAL LAB - Unified Core Logic
+ * Handles: Auth, Navigation, Dashboard Stats, and Medical Reports
+ */
 
-// Backend API base
 const API_BASE = "http://localhost:8080/api";
 
 document.addEventListener("DOMContentLoaded", () => {
+    // 1. Initialize Global UI (Icons, Nav, Logout)
+    initGlobalUI();
 
-  // ---------- SIGNUP ----------
-  const signupForm = document.getElementById("signupForm");
-  if (signupForm) {
-    signupForm.addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const user = {
-        name: document.getElementById("signupName").value.trim(),
-        email: document.getElementById("signupEmail").value.trim(),
-        password: document.getElementById("signupPassword").value,
-        phone: document.getElementById("signupPhone")?.value || "",
-        gender: document.getElementById("signupGender")?.value || "",
-        address: document.getElementById("signupAddress")?.value || ""
-      };
-      try {
-        const res = await fetch(`${API_BASE}/register`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(user)
-        });
-        if (res.ok) {
-          const savedUser = await res.json();
-          alert("Account created ✅");
-          // store minimal profile? redirect to login
-          window.location.href = "login.html";
-        } else {
-          const txt = await res.text();
-          alert("Signup error: " + txt);
-        }
-      } catch (err) {
-        console.error(err);
-        alert("Network/server error during signup");
-      }
-      // Load recent bookings in dashboard
-const recentBookingsDiv = document.getElementById("recentBookings");
-if (recentBookingsDiv) {
-  const user = JSON.parse(localStorage.getItem("loggedInUser"));
-  fetch(`${API_BASE}/bookings/user/${user.id}`)
-    .then(res => res.json())
-    .then(data => {
-      if (!data.length) {
-        recentBookingsDiv.innerHTML = "<p>No bookings yet.</p>";
-        return;
-      }
+    // 2. Page-Specific Router
+    const currentPage = document.body.getAttribute("data-page");
 
-      recentBookingsDiv.innerHTML = data.slice(-5).reverse().map(b => `
-        <div style="padding:8px;border-bottom:1px solid #eee">
-          <strong>${b.testName}</strong><br>
-          ${b.date} at ${b.time}
-        </div>
-      `).join("");
+    switch (currentPage) {
+        case "home":
+            // Index.html logic handled in global UI
+            break;
+        case "dashboard":
+            loadDashboardData();
+            break;
+        case "booking":
+            initBookingLogic();
+            break;
+        case "reports":
+            loadReportsPage();
+            break;
+        case "profile":
+            loadProfileData();
+            break;
+        case "signup":
+            initSignupLogic();
+            break;
+        case "login":
+            initLoginLogic();
+            break;
+    }
+});
+
+/** --- GLOBAL UI & LOGOUT --- **/
+function initGlobalUI() {
+    if (typeof feather !== 'undefined') feather.replace();
+
+    // Highlight Active Link
+    const path = window.location.pathname.split("/").pop() || "index.html";
+    document.querySelectorAll(".nav-link").forEach(link => {
+        if (link.getAttribute("href") === path) link.classList.add("active");
+    });
+
+    // Global Logout
+    const logoutBtn = document.getElementById("globalLogoutBtn") || document.getElementById("logoutBtn");
+    if (logoutBtn) {
+        logoutBtn.onclick = (e) => {
+            e.preventDefault();
+            if (confirm("Are you sure you want to logout?")) {
+                localStorage.removeItem("loggedInUser");
+                sessionStorage.clear();
+                window.location.href = "login.html";
+            }
+        };
+    }
+}
+
+/** --- AUTHENTICATION --- **/
+function initSignupLogic() {
+    const form = document.getElementById("signupForm");
+    if (!form) return;
+    form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const user = {
+            name: document.getElementById("signupName").value,
+            email: document.getElementById("signupEmail").value,
+            password: document.getElementById("signupPassword").value,
+            phone: document.getElementById("signupPhone").value,
+            gender: document.getElementById("signupGender").value,
+            address: document.getElementById("signupAddress").value
+        };
+        try {
+            const res = await fetch(`${API_BASE}/users/register`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(user)
+            });
+            if (res.ok) { alert("Account Created! ✅"); window.location.href = "login.html"; }
+            else { alert("Signup failed: " + await res.text()); }
+        } catch (err) { alert("Backend Server Offline 🚨"); }
     });
 }
 
-    });
-  }
+function initLoginLogic() {
+    const form = document.getElementById("loginForm") || document.getElementById("loginBtn");
+    if (!form) return;
+    const handleLogin = async (e) => {
+        e.preventDefault();
+        const email = document.getElementById("loginEmail").value;
+        const password = document.getElementById("loginPassword").value;
+        try {
+            const res = await fetch(`${API_BASE}/users/login`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ email, password })
+            });
+            if (res.ok) {
+                const user = await res.json();
+                localStorage.setItem("loggedInUser", JSON.stringify(user));
+                window.location.href = "dashboard.html";
+            } else { alert("Invalid Credentials ❌"); }
+        } catch (err) { alert("Connect to Backend failed."); }
+    };
+    form.tagName === "FORM" ? form.onsubmit = handleLogin : form.onclick = handleLogin;
+}
 
-  // ---------- LOGIN ----------
-  const loginBtn = document.getElementById("loginBtn");
-  if (loginBtn) {
-    loginBtn.addEventListener("click", async (e) => {
-      e.preventDefault();
-      const email = document.getElementById("loginEmail").value.trim();
-      const password = document.getElementById("loginPassword").value;
-      if (!email || !password) { alert("Enter email & password"); return; }
-      try {
-        const res = await fetch(`${API_BASE}/login`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email, password })
-        });
-
-        // If backend returns user JSON (on success) — parse JSON
-        if (res.ok) {
-          const userObj = await res.json(); // { id, name, email, ... }
-          userObj.password = undefined;
-          localStorage.setItem("loggedInUser", JSON.stringify(userObj));
-          alert("Login successful ✅");
-          window.location.href = "dashboard.html";
-        } else {
-          const txt = await res.text();
-          alert("Login failed: " + txt);
-        }
-      } catch (err) {
-        console.error(err);
-        alert("Server error during login");
-      }
-    });
-  }
-
-  // ---------- DASHBOARD name & recent ----------
-  const userDisplay = document.getElementById("userDisplay");
-  if (userDisplay) {
+/** --- DASHBOARD & REPORTS --- **/
+function loadDashboardData() {
     const user = JSON.parse(localStorage.getItem("loggedInUser"));
     if (!user) { window.location.href = "login.html"; return; }
-    userDisplay.textContent = user.name || user.email;
-  }
+    
+    document.getElementById("dashUserName").textContent = user.name;
 
-  // ---------- BOOKING FORM ----------
-  const bookingForm = document.getElementById("bookingForm");
-  if (bookingForm) {
-    bookingForm.addEventListener("submit", (e) => {
-      e.preventDefault();
-      const user = JSON.parse(localStorage.getItem("loggedInUser"));
-      if (!user) { alert("Please login"); window.location.href = "login.html"; return; }
-
-      const testSelect = document.getElementById("testName");
-      // test option values are like "Name|||Price" (booking.html uses that)
-      const val = testSelect.value || "";
-      const [testName, price] = val.split("|||");
-
-      const booking = {
-        name: document.getElementById("patientName").value.trim(),
-        gender: document.getElementById("patientGender").value,
-        phone: document.getElementById("patientPhone").value.trim(),
-        email: document.getElementById("patientEmail").value.trim() || user.email,
-        address: document.getElementById("patientAddress").value.trim(),
-        testName: testName || document.getElementById("testName").value,
-        price: Number(price) || 0,
-        date: document.getElementById("testDate").value,
-        time: document.getElementById("testTime").value
-      };
-
-      // Save pending booking (read by payment.html)
-      sessionStorage.setItem("pendingBooking", JSON.stringify(booking));
-      window.location.href = "payment.html";
-
-      
-    });
-  }
-
- 
-
-  // ---------- RECEIPT PAGE ----------
-  const receiptArea = document.getElementById("receiptArea");
-  if (receiptArea) {
-    const id = sessionStorage.getItem("lastReceiptId");
-    const booking = JSON.parse(sessionStorage.getItem("lastBooking"));
-    if (!id || !booking) {
-      receiptArea.textContent = "No receipt found.";
-    } else {
-      receiptArea.innerHTML = `
-        <div style="border:1px dashed #e6ecf2; padding:14px; border-radius:8px; background:#fff">
-          <div style="display:flex;justify-content:space-between;align-items:center">
-            <div><strong>Vital Lab</strong><div class="muted">Receipt ID: ${id}</div></div>
-            <div style="text-align:right">
-              <div class="muted">${new Date().toLocaleString()}</div>
-              <div style="font-weight:700;font-size:18px">₹${booking.price}</div>
-            </div>
-          </div>
-          <hr style="margin:12px 0;border:none;border-top:1px solid #f0f3f6">
-          <div><strong>Patient:</strong> ${booking.name}</div>
-          <div><strong>Test:</strong> ${booking.testName}</div>
-          <div style="margin-top:8px" class="muted">Thank you for choosing Vital Lab!</div>
-        </div>
-      `;
-
-      document.getElementById('downloadReceipt')?.addEventListener('click', () => {
-        const text = `Receipt: ${id}\nDate: ${new Date().toLocaleString()}\nPatient: ${booking.name}\nTest: ${booking.testName}\nAmount: ₹${booking.price}\n\nVital Lab`;
-        const blob = new Blob([text], { type: 'text/plain' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a'); a.href = url; a.download = `${id}.txt`; a.click(); URL.revokeObjectURL(url);
-      });
-    }
-  }
-
-
-  // ---------------- REPORTS PAGE ----------------
-const reportsDiv = document.getElementById("reportList");
-if (reportsDiv) {
-  const user = JSON.parse(localStorage.getItem("loggedInUser"));
-
-  fetch(`${API_BASE.replace("/users","")}/bookings/user/${user.id}`)
-    .then(res => res.json())
-    .then(data => {
-      if (!data.length) {
-        reportsDiv.innerHTML = "<p>No reports yet.</p>";
-        return;
-      }
-
-      reportsDiv.innerHTML = data.map(b => `
-        <div style="padding:10px;border-bottom:1px solid #ddd">
-          <strong>${b.testName}</strong><br>
-          Date: ${b.date}<br>
-          Status: <span style="color:green">${b.status}</span>
-        </div>
-      `).join("");
-    })
-    .catch(() => {
-      reportsDiv.innerHTML = "<p>Error loading reports.</p>";
-    });
+    fetch(`${API_BASE}/bookings/user/${user.id}`)
+        .then(res => res.json())
+        .then(data => {
+            document.getElementById("statTotalBookings").textContent = data.length;
+            document.getElementById("statReportsReady").textContent = data.length;
+            const list = document.getElementById("recentBookingsList");
+            if (data.length > 0) {
+                list.innerHTML = data.slice(-3).reverse().map(b => `
+                    <div style="display:flex; justify-content:space-between; padding:12px 0; border-bottom:1px solid #eee;">
+                        <span><strong>${b.testName}</strong><br><small>${b.date}</small></span>
+                        <span style="color:green; font-weight:bold;">Paid</span>
+                    </div>
+                `).join('');
+            }
+        });
 }
 
-// Profile page fill
-if (document.getElementById("pName")) {
-  const u = JSON.parse(localStorage.getItem("loggedInUser"));
-  document.getElementById("pName").textContent = u.name;
-  document.getElementById("pEmail").textContent = u.email;
-  document.getElementById("pPhone").textContent = u.phone || "Not Provided";
-  document.getElementById("pGender").textContent = u.gender || "Not Provided";
-  document.getElementById("pAddress").textContent = u.address || "Not Provided";
+function loadReportsPage() {
+    const user = JSON.parse(localStorage.getItem("loggedInUser"));
+    const list = document.getElementById("reportList");
+    if (!user || !list) return;
+
+    fetch(`${API_BASE}/bookings/user/${user.id}`)
+        .then(res => res.json())
+        .then(data => {
+            if (data.length === 0) { list.innerHTML = "<li>No reports found.</li>"; return; }
+            list.innerHTML = data.map(b => `
+                <li class="report-item" style="display:flex; justify-content:space-between; align-items:center; padding:15px; background:white; margin-bottom:10px; border-radius:10px; border:1px solid #e2e8f0;">
+                    <div><strong>${b.testName}</strong><br><small class="muted">${b.date}</small></div>
+                    <button class="btn secondary" onclick="openReport('${b.testName}', '${b.date}')">View Report</button>
+                </li>
+            `).join('');
+            feather.replace();
+        });
 }
 
+/** --- SCIENTIFIC DATA GENERATOR --- **/
+window.openReport = function(testName, date) {
+    const modal = document.getElementById("reportModal");
+    const tbody = document.getElementById("reportData");
+    const user = JSON.parse(localStorage.getItem("loggedInUser"));
 
-// -------- DASHBOARD DATA --------
-const recentDiv = document.getElementById("recentBookings");
-const bookingsCount = document.getElementById("totalBookings");
-const reportsCount = document.getElementById("totalReports");
-const amountSpan = document.getElementById("totalAmount");
+    // Scientific Data Map
+    const ranges = {
+        "CBC": [{ p: "Hemoglobin", u: "g/dL", min: 13.5, max: 17.5 }, { p: "WBC Count", u: "cells/mcL", min: 4500, max: 11000 }],
+        "Lipid": [{ p: "Cholesterol", u: "mg/dL", min: 125, max: 200 }, { p: "Triglycerides", u: "mg/dL", min: 50, max: 150 }],
+        "Default": [{ p: "Blood Sugar", u: "mg/dL", min: 70, max: 100 }]
+    };
 
-if (recentDiv && bookingsCount && reportsCount && amountSpan) {
-  console.log("✅ Dashboard script running...");
+    const key = testName.includes("CBC") ? "CBC" : testName.includes("Lipid") ? "Lipid" : "Default";
+    const params = ranges[key];
 
-  const user = JSON.parse(localStorage.getItem("loggedInUser"));
-  if (!user) {
-    window.location.href = "login.html";
-    return;
-  }
+    document.getElementById("viewTestName").textContent = testName;
+    document.getElementById("viewPatientName").textContent = user.name;
+    document.getElementById("viewDate").textContent = "Date: " + date;
 
-  fetch(`http://localhost:8080/api/bookings/user/${user.id}`)
-    .then(res => res.json())
-    .then(bookings => {
+    tbody.innerHTML = params.map(item => {
+        const val = (item.min + (Math.random() * (item.max - item.min))).toFixed(1);
+        return `<tr><td>${item.p}</td><td><strong>${val}</strong></td><td>${item.u}</td><td>${item.min}-${item.max}</td></tr>`;
+    }).join('');
 
-      // ✅ Counts
-      bookingsCount.textContent = bookings.length;
-      reportsCount.textContent = bookings.length;
+    modal.style.display = "block";
+};
 
-      // ✅ Total Amount
-      const totalAmount = bookings.reduce((sum, b) => sum + (b.price || 0), 0);
-      amountSpan.textContent = totalAmount;
+window.closeModal = () => document.getElementById("reportModal").style.display = "none";
 
-      // ✅ Recent Bookings Section
-      if (!bookings.length) {
-        recentDiv.innerHTML = "<p>No bookings yet. Book a test to get started.</p>";
-        return;
-      }
-
-      recentDiv.innerHTML = bookings.slice(-5).reverse().map(b => `
-        <div style="padding:10px;border-bottom:1px solid #eee;">
-          <strong>${b.testName}</strong><br>
-          Date: ${b.date}<br>
-          Amount: ₹${b.price || 0}<br>
-          Status: <span style="color:green">${b.status}</span>
-        </div>
-      `).join("");
-      
-    })
-    .catch(err => {
-      console.error(err);
-      recentDiv.innerHTML = "<p>Error loading bookings.</p>";
-    });
+function loadProfileData() {
+    const u = JSON.parse(localStorage.getItem("loggedInUser"));
+    if (!u) return;
+    const map = { "pName": u.name, "pEmail": u.email, "pPhone": u.phone, "pGender": u.gender, "pAddress": u.address };
+    for (let id in map) if (document.getElementById(id)) document.getElementById(id).textContent = map[id] || "N/A";
 }
-
-// -------- LOGOUT --------
-const logoutBtn = document.getElementById("logoutBtn");
-if (logoutBtn) {
-  logoutBtn.addEventListener("click", () => {
-    localStorage.removeItem("loggedInUser");
-    sessionStorage.clear();
-    window.location.href = "login.html";
-  });
-}
-
-});

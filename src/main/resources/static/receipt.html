@@ -1,34 +1,213 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Receipt — Vital Lab</title>
+  <title>Payment Receipt — Vital Lab</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Montserrat:wght@800&display=swap" rel="stylesheet">
+  
+  <script src="https://unpkg.com/feather-icons"></script>
+  
   <link rel="stylesheet" href="styles.css">
+
+  <style>
+    * {
+      font-family: 'Inter', sans-serif !important;
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background-color: #f1f5f9;
+      color: #1e293b;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 20px;
+    }
+
+    .receipt-container {
+      background: white;
+      width: 100%;
+      max-width: 600px;
+      padding: 40px;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+      border: 1px solid #e2e8f0;
+      position: relative;
+    }
+
+    .receipt-header {
+      text-align: center;
+      border-bottom: 2px dashed #e2e8f0;
+      padding-bottom: 20px;
+      margin-bottom: 30px;
+    }
+
+    .brand-logo-box {
+      background: #2563eb;
+      color: white;
+      width: 40px;
+      height: 40px;
+      display: inline-flex;
+      align-items: center;      
+      justify-content: center;
+      border-radius: 8px;
+      font-family: 'Montserrat', sans-serif !important;
+      font-weight: 800;
+      margin-bottom: 10px;
+    }
+
+    .detail-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 16px;
+      font-size: 0.95rem;
+    }
+
+    .detail-label {
+      color: #64748b;
+      font-weight: 500;
+    }
+
+    .detail-value {
+      color: #1e293b;
+      font-weight: 600;
+      text-align: right;
+    }
+
+    .total-section {
+      margin-top: 30px;
+      padding-top: 20px;
+      border-top: 2px solid #f1f5f9;
+    }
+
+    .success-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #dcfce7;
+      color: #166534;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      margin-top: 10px;
+    }
+
+    .action-buttons {
+      margin-top: 30px;
+      display: flex;
+      gap: 12px;
+      width: 100%;
+      max-width: 600px;
+    }
+
+    /* Print settings */
+    @media print {
+      .action-buttons, .back-link {
+        display: none !important;
+      }
+      body {
+        background: white;
+        padding: 0;
+      }
+      .receipt-container {
+        box-shadow: none;
+        border: none;
+        max-width: 100%;
+      }
+    }
+  </style>
 </head>
-<body data-page="receipt">
+<body>
 
-<header class="site-header">
-  <div class="brand">🩺 <strong>Vital Lab</strong></div>
-  <nav class="main-nav">
-    <a href="dashboard.html">Dashboard</a>
-    <a href="booking.html">Book Test</a>
-    <a href="reports.html">My Reports</a>
-    <a href="profile.html">Profile</a>
-  </nav>
-</header>
-
-<main class="page">
-  <section class="card narrow-card">
-    <h1>Receipt</h1>
-    <div id="receiptArea" class="muted"></div>
-    <div style="margin-top:14px; text-align:right">
-      <button id="downloadReceipt" class="btn secondary">Download Receipt</button>
-      <button onclick="location.href='dashboard.html'" class="btn primary">Back to Dashboard</button>
+  <div class="receipt-container">
+    <div class="receipt-header">
+      <div class="brand-logo-box">V</div>
+      <h2 style="font-family: 'Montserrat', sans-serif !important; margin: 0; color: #1e293b;">VITAL LAB</h2>
+      <p style="font-size: 0.85rem; color: #64748b; margin: 5px 0;">Official Payment Receipt</p>
+      <div class="success-badge">
+        <i data-feather="check-circle" style="width: 14px; height: 14px;"></i> Payment Successful
+      </div>
     </div>
-  </section>
-</main>
 
-<script src="common.js"></script>
+    <div id="receiptContent">
+      <div class="detail-row">
+        <span class="detail-label">Receipt ID</span>
+        <span class="detail-value" id="rId">---</span>
+      </div>
+      <div class="detail-row">
+        <span class="detail-label">Date & Time</span>
+        <span class="detail-value" id="rDateTime">---</span>
+      </div>
+      
+      <div style="height: 1px; background: #f1f5f9; margin: 20px 0;"></div>
+
+      <div class="detail-row">
+        <span class="detail-label">Test Booked</span>
+        <span class="detail-value" id="rTestName">---</span>
+      </div>
+      <div class="detail-row">
+        <span class="detail-label">Appointment Slot</span>
+        <span class="detail-value" id="rSlot">---</span>
+      </div>
+      <div class="detail-row">
+        <span class="detail-label">Patient Name</span>
+        <span class="detail-value" id="rUser">---</span>
+      </div>
+
+      <div class="total-section">
+        <div class="detail-row" style="font-size: 1.25rem;">
+          <span class="detail-label" style="color: #1e293b; font-weight: 800;">Total Paid</span>
+          <span class="detail-value" style="color: #2563eb; font-weight: 800;" id="rAmount">₹0</span>
+        </div>
+      </div>
+    </div>
+
+    <div style="text-align: center; margin-top: 40px; font-size: 0.75rem; color: #94a3b8;">
+      Thank you for choosing Vital Lab. Please keep this receipt for your records.
+    </div>
+  </div>
+
+  <div class="action-buttons">
+    <button onclick="window.print()" class="btn primary" style="flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px;">
+      <i data-feather="download" style="width: 18px; height: 18px;"></i> Download Receipt (PDF)
+    </button>
+    <a href="dashboard.html" class="btn secondary" style="flex: 1; text-align: center; text-decoration: none; display: flex; align-items: center; justify-content: center;">
+      Go to Dashboard
+    </a>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      if (window.feather) feather.replace();
+
+      // 1. Fetch Data
+      const user = JSON.parse(localStorage.getItem("loggedInUser"));
+      const lastBooking = JSON.parse(sessionStorage.getItem("lastBooking"));
+      const receiptId = sessionStorage.getItem("lastReceiptId");
+
+      if (!lastBooking || !receiptId) {
+        alert("No recent transaction found.");
+        window.location.href = "dashboard.html";
+        return;
+      }
+
+      // 2. Populate Receipt Details
+      document.getElementById("rId").textContent = receiptId;
+      document.getElementById("rDateTime").textContent = new Date().toLocaleString();
+      document.getElementById("rTestName").textContent = lastBooking.testName;
+      document.getElementById("rSlot").textContent = `${lastBooking.date} | ${lastBooking.time}`;
+      document.getElementById("rUser").textContent = user ? user.name : "Guest User";
+      document.getElementById("rAmount").textContent = `₹${lastBooking.price}`;
+
+      // 3. AUTO-DOWNLOAD (Triggers Print Dialog automatically)
+      setTimeout(() => {
+        window.print();
+      }, 1000);
+    });
+  </script>
 </body>
 </html>

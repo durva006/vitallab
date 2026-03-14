@@ -1,43 +1,146 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Login — Vital Lab</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Montserrat:wght@800&display=swap" rel="stylesheet">
+  
+  <script src="https://unpkg.com/feather-icons"></script>
+  
   <link rel="stylesheet" href="styles.css">
+
+  <style>
+    /* Global font override */
+    * {
+      font-family: 'Inter', sans-serif !important;
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background-color: #f8fafc;
+      color: #1e293b;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    /* Centers the login card on the page */
+    .login-container {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .narrow-card {
+      max-width: 400px;
+      width: 100%;
+      background: white;
+      padding: 40px;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
+      border: 1px solid #e2e8f0;
+    }
+
+    .stack-form label {
+      display: block;
+      margin-bottom: 20px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: #475569;
+    }
+
+    .stack-form input {
+      width: 100%;
+      padding: 12px;
+      margin-top: 8px;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      font-size: 1rem;
+      transition: border-color 0.2s;
+    }
+
+    .stack-form input:focus {
+      outline: none;
+      border-color: #2563eb;
+    }
+  </style>
 </head>
 <body data-page="login">
 
-<header class="site-header">
-  <div class="brand">🩺 <strong>Vital Lab</strong></div>
-  <nav class="main-nav">
-    <a href="signup.html">Sign Up</a>
-    <a href="login.html" class="active">Login</a>
-  </nav>
+  <header class="site-header">
+  <a href="index.html" class="brand-container">
+    <div class="brand-logo-box">V</div>
+    <span class="brand-text">VITAL<span style="color: #2563eb;">LAB</span></span>
+  </a>
+
+  <nav class="nav-menu">
+    <a href="index.html" class="nav-link">Home</a>
+    <a href="signup.html" class="nav-link">Sign Up</a>
+    </nav>
 </header>
 
-<main class="page">
-  <section class="card narrow-card">
-    <h1>Sign in 🔓</h1>
-    <p class="muted">Use your account to access the dashboard and reports.</p>
+  <main class="login-container">
+    <section class="narrow-card">
+      <div style="text-align: center; margin-bottom: 30px;">
+        <div style="background: #eff6ff; width: 60px; height: 60px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 15px;">
+          <i data-feather="lock" style="color: #2563eb;"></i>
+        </div>
+        <h1 style="font-size: 1.75rem; font-weight: 800; margin: 0; font-family: 'Montserrat', sans-serif !important;">Sign In</h1>
+        <p class="muted" style="margin-top: 8px;">Access your medical records securely.</p>
+      </div>
+      
+      <form id="loginForm" class="stack-form">
+        <label>Email Address
+          <input type="email" id="loginEmail" placeholder="name@example.com" required>
+        </label>
+        <label>Password
+          <input type="password" id="loginPassword" placeholder="••••••••" required>
+        </label>
+        <button type="submit" id="loginBtn" class="btn primary" style="width: 100%; margin-top: 10px; padding: 14px; font-weight: 700;">
+          Sign In
+        </button>
+      </form>
 
-    <form id="loginForm" class="stack-form" autocomplete="off" onsubmit="return false;">
-  <label>Email
-    <input type="email" id="loginEmail" required>
-  </label>
-  <label>Password
-    <input type="password" id="loginPassword" required>
-  </label>
+      <div style="text-align: center; margin-top: 25px; font-size: 0.9rem;">
+        <span class="muted">Don't have an account?</span> 
+        <a href="signup.html" style="color: #2563eb; font-weight: 600; text-decoration: none;">Create one</a>
+      </div>
+    </section>
+  </main>
 
-  <div style="text-align:right">
-    <button type="button" id="loginBtn" class="btn primary">Sign in</button>
-  </div>
-</form>
+  <script src="common.js"></script>
 
-<script src="common.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      // Initialize icons
+      if (window.feather) feather.replace();
 
-<script>
-console.log("✅ Login page HTML is running");
-</script>
+      const loginForm = document.getElementById("loginForm");
+      
+      loginForm.onsubmit = (e) => {
+        e.preventDefault();
+        
+        const email = document.getElementById("loginEmail").value;
+        const pass = document.getElementById("loginPassword").value;
+
+        // Basic Mock Logic: In a real app, you'd check this against a database/localStorage
+        // For now, let's pretend any login works or check against your signup data
+        const users = JSON.parse(localStorage.getItem("users")) || [];
+        const user = users.find(u => u.email === email && u.password === pass);
+
+        if (user) {
+          localStorage.setItem("loggedInUser", JSON.stringify(user));
+          window.location.href = "dashboard.html";
+        } else {
+          alert("Invalid email or password. Please try again.");
+        }
+      };
+    });
+  </script>
 </body>
 </html>

@@ -1,107 +1,166 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Sign Up — Vital Lab</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Montserrat:wght@800&display=swap" rel="stylesheet">
+  
+  <script src="https://unpkg.com/feather-icons"></script>
+  
   <link rel="stylesheet" href="styles.css">
+
+  <style>
+    * { font-family: 'Inter', sans-serif !important; box-sizing: border-box; }
+    body { background-color: #f8fafc; margin: 0; color: #1e293b; }
+
+    .grid-form {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    .grid-form label {
+      display: flex;
+      flex-direction: column;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #475569;
+    }
+
+    .grid-form input, .grid-form select, .grid-form textarea {
+      margin-top: 6px;
+      padding: 12px;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      font-size: 1rem;
+    }
+
+    /* Mobile Responsive */
+    @media (max-width: 600px) {
+      .grid-form { grid-template-columns: 1fr; }
+    }
+  </style>
 </head>
 <body data-page="signup">
 
-<header class="site-header">
-  <div class="brand">🩺 <strong>Vital Lab</strong></div>
-  <nav class="main-nav">
-    <a href="signup.html">Sign Up</a>
-    <a href="login.html" id="navLogin">Login</a>
-  </nav>
-</header>
+  <header class="site-header">
+    <a href="index.html" class="brand-container">
+      <div class="brand-logo-box">V</div>
+      <span class="brand-text">VITAL<span style="color: #2563eb;">LAB</span></span>
+    </a>
 
-<main class="page">
-  <section class="card wide-card">
-    <h1>Create account ✍️</h1>
-    <p class="muted">Create your account to manage bookings, view reports and receipts.</p>
+    <nav class="nav-menu">
+      <a href="index.html" class="nav-link">Home</a>
+      <a href="login.html" class="nav-link">Log In</a>
+    </nav>
+  </header>
 
-    <form id="signupForm" class="grid-form">
-      <label>
-        Full name
-        <input type="text" id="signupName" placeholder="e.g., Priya Sharma" required>
-      </label>
-
-      <label>
-        Email
-        <input type="email" id="signupEmail" placeholder="you@domain.com" required>
-      </label>
-
-      <label>
-        Phone
-        <input type="tel" id="signupPhone" placeholder="+91 98765 43210">
-      </label>
-
-      <label>
-        Gender
-        <select id="signupGender">
-          <option value="">Select</option>
-          <option>Female</option>
-          <option>Male</option>
-          <option>Other</option>
-          <option>Prefer not to say</option>
-        </select>
-      </label>
-
-      <label style="grid-column:1 / -1">
-        Address
-        <textarea id="signupAddress" placeholder="Flat / building, street, city, pincode"></textarea>
-      </label>
-
-      <label>
-        Password
-        <input type="password" id="signupPassword" placeholder="Choose a secure password" required>
-      </label>
-
-      <div style="grid-column:1 / -1; text-align:right">
-        <button type="submit" class="btn primary">Create account</button>
+  <main class="page">
+    <section class="card wide-card" style="max-width: 800px; margin: 40px auto; padding: 40px; background: white; border-radius: 16px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">
+      <div style="text-align: center; margin-bottom: 30px;">
+        <div style="background: #eff6ff; width: 50px; height: 50px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 15px;">
+          <i data-feather="user-plus" style="color: #2563eb;"></i>
+        </div>
+        <h1 style="font-family: 'Montserrat', sans-serif !important; margin: 0;">Create Your Account</h1>
+        <p class="muted" style="margin-top: 8px;">Join Vital Lab to track your health journey.</p>
       </div>
-    </form>
 
-    <p class="muted">Already have an account? <a href="login.html">Login</a></p>
-  </section>
-</main>
+      <form id="signupForm" class="grid-form">
+        <label>Full Name
+          <input type="text" id="signupName" placeholder="e.g. John Doe" required>
+        </label>
 
-<script src="common.js"></script>
-<script>
-document.getElementById("signupForm").addEventListener("submit", async function(e) {
-  e.preventDefault();
+        <label>Email Address
+          <input type="email" id="signupEmail" placeholder="john@example.com" required>
+        </label>
 
-  const user = {
-    name: document.getElementById("signupName").value,
-    email: document.getElementById("signupEmail").value,
-    password: document.getElementById("signupPassword").value,
-    phone: document.getElementById("signupPhone").value,
-    gender: document.getElementById("signupGender").value,
-    address: document.getElementById("signupAddress").value
-  };
+        <label>Phone Number
+          <input type="tel" id="signupPhone" placeholder="+91 XXXXX XXXXX">
+        </label>
 
-  try {
-    const response = await fetch("http://localhost:8080/api/users/register", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(user)
+        <label>Gender
+          <select id="signupGender">
+            <option value="">Select Gender</option>
+            <option>Female</option>
+            <option>Male</option>
+            <option>Other</option>
+          </select>
+        </label>
+
+        <label style="grid-column: 1 / -1;">Home Address
+          <textarea id="signupAddress" rows="2" placeholder="Street, City, Pincode"></textarea>
+        </label>
+
+        <label>Set Password
+          <input type="password" id="signupPassword" placeholder="Minimum 8 characters" required>
+        </label>
+
+        <label>Confirm Password
+          <input type="password" id="confirmPassword" placeholder="Repeat password" required>
+        </label>
+
+        <div style="grid-column: 1 / -1; margin-top: 15px;">
+          <button type="submit" class="btn primary" style="width: 100%; font-size: 1.1rem; padding: 14px; border-radius: 8px; cursor: pointer;">
+            Create Account
+          </button>
+          <p class="muted" style="text-align: center; margin-top: 20px;">
+            Already have an account? <a href="login.html" style="color: #2563eb; font-weight: 600; text-decoration: none;">Log In</a>
+          </p>
+        </div>
+      </form>
+    </section>
+  </main>
+
+  <script src="common.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      if (window.feather) feather.replace();
+
+      document.getElementById("signupForm").addEventListener("submit", async function(e) {
+        e.preventDefault();
+
+        const password = document.getElementById("signupPassword").value;
+        const confirm = document.getElementById("confirmPassword").value;
+
+        // Validation: Passwords must match
+        if (password !== confirm) {
+          alert("⚠️ Passwords do not match!");
+          return;
+        }
+
+        const user = {
+          name: document.getElementById("signupName").value,
+          email: document.getElementById("signupEmail").value,
+          password: password,
+          phone: document.getElementById("signupPhone").value,
+          gender: document.getElementById("signupGender").value,
+          address: document.getElementById("signupAddress").value
+        };
+
+        try {
+          const response = await fetch("http://localhost:8080/api/users/register", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(user)
+          });
+
+          if (response.ok) {
+            alert("🎉 Account created successfully!");
+            document.getElementById("signupForm").reset();
+            window.location.href = "login.html";
+          } else {
+            const err = await response.json();
+            alert("⚠️ Error: " + (err.message || "Unable to register."));
+          }
+        } catch (error) {
+          console.error("Network or server error:", error);
+          alert("🚨 Failed to connect to server. Ensure your backend is running on port 8080.");
+        }
+      });
     });
-
-    if (response.ok) {
-      alert("🎉 Account created successfully!");
-      document.getElementById("signupForm").reset();
-      window.location.href = "login.html";
-    } else {
-      const err = await response.json();
-      alert("⚠️ Error: " + (err.message || "Unable to register."));
-    }
-  } catch (error) {
-    console.error("Network or server error:", error);
-    alert("🚨 Failed to connect to server.");
-  }
-});
-</script>
+  </script>
 
 </body>
 </html>

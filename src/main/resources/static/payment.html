@@ -1,107 +1,243 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Payment — Health Booking</title>
+  <title>Payment — Vital Lab</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Montserrat:wght@800&display=swap" rel="stylesheet">
+  
+  <script src="https://unpkg.com/feather-icons"></script>
+  
   <link rel="stylesheet" href="styles.css">
+
+  <style>
+    * {
+      font-family: 'Inter', sans-serif !important;
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background-color: #f8fafc;
+      color: #1e293b;
+    }
+
+    .narrow-card {
+      max-width: 500px;
+      margin: 40px auto;
+      background: white;
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+      border: 1px solid #e2e8f0;
+    }
+
+    .summary-box {
+      background: #f1f5f9;
+      padding: 20px;
+      border-radius: 12px;
+      margin-bottom: 25px;
+      border-left: 4px solid #2563eb;
+    }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+    }
+
+    .stack-form label {
+      display: block;
+      margin-bottom: 15px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #475569;
+    }
+
+    .stack-form input {
+      width: 100%;
+      padding: 12px;
+      margin-top: 6px;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      font-size: 1rem;
+    }
+
+    .secure-badge {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-size: 0.8rem;
+      color: #10b981;
+      margin-top: 20px;
+    }
+  </style>
 </head>
 <body data-page="payment">
 
-<header class="site-header">
-  <div class="brand">🩺 <strong>Vital Lab</strong></div>
-  <nav class="main-nav">
-    <a href="dashboard.html">Dashboard</a>
-    <a href="booking.html">Book Test</a>
-    <a href="reports.html">My Reports</a>
-    <a href="profile.html">Profile</a>
-    <a href="#" id="logoutLink" style="display:none">Logout 🚪</a>
-  </nav>
-</header>
+  <header class="site-header">
+    <a href="dashboard.html" class="brand-container">
+      <div class="brand-logo-box">V</div>
+      <span class="brand-text">VITAL<span style="color: #2563eb;">LAB</span></span>
+    </a>
 
-<main class="page">
-  <section class="card narrow-card">
-    <h1>Payment 💳</h1>
-    <div id="pendingInfo" class="muted" style="margin-bottom:12px"></div>
+    <nav class="nav-menu">
+      <a href="dashboard.html" class="nav-link">Dashboard</a>
+      <a href="booking.html" class="nav-link">Book Test</a>
+      <a href="reports.html" class="nav-link">Reports</a>
+      <a href="profile.html" class="nav-link">
+        <i data-feather="user" style="width: 18px; height: 18px;"></i>
+        <span>Profile</span>
+      </a>
+      <button id="globalLogoutBtn" class="logout-btn">Logout</button>
+    </nav>
+  </header>
 
-    <form id="paymentForm" class="stack-form">
-      <label>Cardholder name
-        <input type="text" id="cardName" required>
-      </label>
+  <main class="page">
+    <section class="narrow-card">
+      <h1 style="font-family: 'Montserrat', sans-serif !important; font-size: 1.5rem; margin-bottom: 20px; display: flex; align-items: center; gap: 10px;">
+        <i data-feather="credit-card" style="color: #2563eb;"></i> Checkout
+      </h1>
 
-      <label>Card number
-        <input type="text" id="cardNumber" placeholder="4242 4242 4242 4242" required>
-      </label>
-
-      <div class="two-col">
-        <label>Expiry
-          <input type="text" id="cardExp" placeholder="MM/YY" required>
-        </label>
-        <label>CVC
-          <input type="text" id="cardCvc" placeholder="123" required>
-        </label>
+      <div id="pendingInfo" class="summary-box">
+        <p class="muted" style="margin: 0; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em;">Booking Summary</p>
+        <div id="summaryDetails" style="margin-top: 10px; font-weight: 600;">
+          Loading details...
+        </div>
       </div>
 
-      <div style="text-align:right">
-        <button type="submit" class="btn primary">Pay and Confirm</button>
+      <form id="paymentForm" class="stack-form">
+        <label>Cardholder Name
+          <input type="text" id="cardName" placeholder="John Doe" required>
+        </label>
+
+        <label>Card Number
+          <input type="text" id="cardNumber" placeholder="4242 4242 4242 4242" maxlength="19" required>
+        </label>
+
+        <div class="two-col">
+          <label>Expiry Date
+            <input type="text" id="cardExp" placeholder="MM/YY" maxlength="5" required>
+          </label>
+          <label>CVC
+            <input type="text" id="cardCvc" placeholder="123" maxlength="3" required>
+          </label>
+        </div>
+
+        <div style="margin-top: 20px;">
+          <button type="submit" class="btn primary" style="width: 100%; padding: 14px; font-size: 1rem;">
+            Pay & Confirm Booking
+          </button>
+        </div>
+      </form>
+
+      <div class="secure-badge">
+        <i data-feather="lock" style="width: 14px; height: 14px;"></i>
+        Secure 256-bit SSL Encrypted Payment
       </div>
-    </form>
-  </section>
-</main>
+    </section>
+  </main>
 
-<script>
-document.addEventListener("DOMContentLoaded", function () {
-  const user = JSON.parse(localStorage.getItem("loggedInUser"));
-  if (!user) { alert("Please login"); window.location.href = "login.html"; return; }
+  <script src="common.js"></script>
 
-  const pending = JSON.parse(sessionStorage.getItem("pendingBooking"));
-  if (!pending) { alert("No booking in progress"); window.location.href = "booking.html"; return; }
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      if (window.feather) feather.replace();
 
-  document.getElementById("pendingInfo").textContent =
-    `Pay to confirm: ${pending.testName} on ${pending.date} at ${pending.time} — ₹${pending.price}`;
-
-  document.getElementById("paymentForm").addEventListener("submit", async function (e) {
-    e.preventDefault();
-
-    const bookingRequest = {
-      testName: pending.testName,
-      date: pending.date,
-      status: "confirmed",
-      price: pending.price,
-      user: { id: user.id },
-      test: null
-    };
-
-    try {
-      const res = await fetch("http://localhost:8080/api/bookings/create", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(bookingRequest)
-      });
-
-      if (!res.ok) {
-        const txt = await res.text();
-        console.error("Booking failed:", txt);
-        alert("Payment failed: " + txt);
-        return;
+      const user = JSON.parse(localStorage.getItem("loggedInUser"));
+      if (!user) { 
+        alert("Please login to continue."); 
+        window.location.href = "login.html"; 
+        return; 
       }
-      const data = await res.json();
-      sessionStorage.setItem("lastReceiptId", data.receiptId);
-      sessionStorage.setItem("lastBooking", JSON.stringify(pending));
-      sessionStorage.removeItem("pendingBooking");
 
-      alert("Payment successful!");
-      window.location.href = "receipt.html";
-    } catch (err) {
-      console.error(err);
-      alert("Server error during payment");
-    }
-  });
-});
-</script>
+      const pending = JSON.parse(sessionStorage.getItem("pendingBooking"));
+      if (!pending) { 
+        alert("No booking in progress."); 
+        window.location.href = "booking.html"; 
+        return; 
+      }
 
-<script src="common.js"></script>
+      // Display Summary Details
+      document.getElementById("summaryDetails").innerHTML = `
+        <div style="font-size: 1.1rem; color: #1e293b;">${pending.testName}</div>
+        <div style="font-size: 0.9rem; color: #64748b; font-weight: 400; margin-top: 4px;">
+          Scheduled for ${pending.date} at ${pending.time}
+        </div>
+        <div style="margin-top: 12px; font-size: 1.25rem; color: #2563eb; font-weight: 800;">₹${pending.price}</div>
+      `;
 
+      document.getElementById("paymentForm").addEventListener("submit", async function (e) {
+        e.preventDefault();
 
+        // Simulate small delay for "Processing"
+        const btn = e.target.querySelector('button');
+        btn.disabled = true;
+        btn.textContent = "Processing...";
+
+        const bookingRequest = {
+          testName: pending.testName,
+          date: pending.date,
+          status: "confirmed",
+          price: pending.price,
+          user: { id: user.id },
+          test: null
+        };
+
+        try {
+          const res = await fetch("http://localhost:8080/api/bookings/create", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(bookingRequest)
+          });
+
+          if (!res.ok) {
+            const txt = await res.text();
+            alert("Payment failed: " + txt);
+            btn.disabled = false;
+            btn.textContent = "Pay & Confirm Booking";
+            return;
+          }
+          
+          const data = await res.json();
+          sessionStorage.setItem("lastReceiptId", data.receiptId || "REC-" + Math.floor(Math.random() * 1000000));
+          sessionStorage.setItem("lastBooking", JSON.stringify(pending));
+          sessionStorage.removeItem("pendingBooking");
+
+          alert("Payment successful!");
+          window.location.href = "receipt.html";
+        } catch (err) {
+          console.error(err);
+          alert("Server error. Please ensure your backend is running.");
+          btn.disabled = false;
+          btn.textContent = "Pay & Confirm Booking";
+        }
+      });
+    });
+
+    function handlePaymentSuccess() {
+  const lastBooking = JSON.parse(sessionStorage.getItem("lastBooking"));
+  
+  if (lastBooking) {
+    // 1. Get existing permanent bookings
+    let allBookings = JSON.parse(localStorage.getItem("bookings")) || [];
+    
+    // 2. Add the new one
+    allBookings.push({
+      ...lastBooking,
+      status: "Ready",
+      receiptId: "REC-" + Math.floor(Math.random() * 1000000)
+    });
+    
+    // 3. Save back to localStorage
+    localStorage.setItem("bookings", JSON.stringify(allBookings));
+  }
+  
+  // 4. Proceed to receipt
+  window.location.href = "receipt.html";
+}
+  </script>
 </body>
 </html>
