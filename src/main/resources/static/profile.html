@@ -1,251 +1,54 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Profile — Vital Lab</title>
-  
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Montserrat:wght@800&display=swap" rel="stylesheet">
-  <script src="https://unpkg.com/feather-icons"></script>
   <link rel="stylesheet" href="styles.css">
-
-  <style>
-    * { font-family: 'Inter', sans-serif !important; box-sizing: border-box; }
-    body { background-color: #f8fafc; margin: 0; color: #1e293b; }
-
-    .profile-header {
-      background: white;
-      padding: 60px 20px;
-      border-bottom: 1px solid #e2e8f0;
-      text-align: center;
-      margin-bottom: 30px;
-    }
-
-    .avatar-circle {
-      width: 100px;
-      height: 100px;
-      background: #eff6ff;
-      color: #2563eb;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;      
-      justify-content: center;
-      margin: 0 auto 15px;
-      font-size: 2.5rem;
-      font-weight: 700;
-      border: 4px solid white;
-      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
-    }
-
-    .info-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 20px;
-      max-width: 900px;
-      margin: 0 auto 40px;
-    }
-
-    .info-tile {
-      background: white;
-      padding: 20px;
-      border-radius: 12px;
-      border: 1px solid #e2e8f0;
-      display: flex;
-      align-items: flex-start;
-      gap: 15px;
-    }
-
-    .icon-wrapper {
-      background: #f1f5f9;
-      padding: 10px;
-      border-radius: 8px;
-      color: #64748b;
-    }
-
-    .info-label { font-size: 0.75rem; text-transform: uppercase; font-weight: 600; color: #64748b; margin-bottom: 4px; }
-    .info-value { font-size: 1rem; color: #1e293b; font-weight: 500; }
-
-    .modal {
-      display: none;
-      position: fixed;
-      top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(0,0,0,0.5);
-      backdrop-filter: blur(4px);
-      z-index: 1000;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .modal-content {
-      background: white;
-      padding: 30px;
-      border-radius: 16px;
-      width: 90%;
-      max-width: 500px;
-    }
-
-    input, textarea {
-      width: 100%;
-      padding: 12px;
-      margin: 8px 0 16px;
-      border: 1px solid #cbd5e1;
-      border-radius: 8px;
-    }
-
-    .btn-group { display: flex; gap: 10px; justify-content: flex-end; }
-  </style>
 </head>
+<body data-page="profile">
 
-<body> <header class="site-header">
-    <a href="dashboard.html" class="brand-container">
-      <div class="brand-logo-box">V</div>
-      <span class="brand-text">VITAL<span style="color: #2563eb;">LAB</span></span>
-    </a>
+<header class="site-header">
+  <div class="brand">🩺 <strong>Vital Lab</strong></div>
+  <nav class="main-nav">
+    <a href="dashboard.html">Dashboard</a>
+    <a href="booking.html">Book Test</a>
+    <a href="reports.html">My Reports</a>
+    <a href="#" id="logoutLink" style="display:none">Logout 🚪</a>
+  </nav>
+</header>
 
-    <nav class="nav-menu">
-      <a href="dashboard.html" class="nav-link">Dashboard</a>
-      <a href="booking.html" class="nav-link">Book Test</a>
-      <a href="reports.html" class="nav-link">Reports</a>
-      <a href="profile.html" class="nav-link">
-        <i data-feather="user" style="width: 18px; height: 18px;"></i>
-        <span>Profile</span>
-      </a>
-      <button id="globalLogoutBtn" class="logout-btn">Logout</button>
-    </nav>
-  </header>
+<main class="page">
+  <section class="card wide-card">
+    <h1>My Profile 👤</h1>
 
-  <main>
-    <section class="profile-header">
-      <div class="avatar-circle" id="userInitial">U</div>
-      <h1 id="pNameLarge" style="margin: 10px 0 5px; font-weight: 800; font-family: 'Montserrat', sans-serif !important;">User Name</h1>
-      <p class="muted" id="pEmailSmall">user@email.com</p>
-      
-      <button id="editProfileBtn" class="btn primary" style="margin-top: 25px; display: inline-flex; align-items: center; gap: 8px; padding: 12px 28px; border-radius: 8px; cursor: pointer;">
-        <i data-feather="edit-3" style="width: 16px;"></i>
-        <span>Edit Profile</span>
-      </button>
-    </section>
+    <p><strong>Name:</strong> <span id="pName"></span></p>
+    <p><strong>Email:</strong> <span id="pEmail"></span></p>
+    <p><strong>Phone:</strong> <span id="pPhone"></span></p>
+    <p><strong>Gender:</strong> <span id="pGender"></span></p>
+    <p><strong>Address:</strong> <span id="pAddress"></span></p>
 
-    <div class="page" style="max-width: 900px; margin: 0 auto; padding: 0 20px;">
-      <div class="info-grid">
-        <div class="info-tile">
-          <div class="icon-wrapper"><i data-feather="phone"></i></div>
-          <div>
-            <div class="info-label">Phone Number</div>
-            <div class="info-value" id="pPhone">Not Provided</div>
-          </div>
-        </div>
-        <div class="info-tile">
-          <div class="icon-wrapper"><i data-feather="user"></i></div>
-          <div>
-            <div class="info-label">Gender</div>
-            <div class="info-value" id="pGender">Not Provided</div>
-          </div>
-        </div>
-        <div class="info-tile" style="grid-column: 1 / -1;">
-          <div class="icon-wrapper"><i data-feather="map-pin"></i></div>
-          <div>
-            <div class="info-label">Permanent Address</div>
-            <div class="info-value" id="pAddress">Not Provided</div>
-          </div>
-        </div>
-      </div>
+    <div style="text-align:right; margin-top:20px;">
+      <button id="editProfileBtn" class="btn primary">Edit Profile ✏️</button>
     </div>
-  </main>
-
-  <div class="modal" id="editModal">
-  <div class="modal-content">
-    <h2 style="margin: 0 0 20px; font-family: 'Montserrat', sans-serif !important;">Update Profile</h2>
-    <form id="editForm">
-      <label>Full Name 
-        <input type="text" id="editName" required>
-      </label>
-
-      <label>Email Address 
-        <input type="email" id="editEmail" required>
-      </label>
-      
-      <label>Phone Number 
-        <input type="tel" id="editPhone">
-      </label>
-
-      <label>Address 
-        <textarea id="editAddress" rows="3"></textarea>
-      </label>
-      
-      <div class="btn-group">
-        <button type="button" class="btn secondary" onclick="closeModal()" style="background:#f1f5f9; border:none; padding:12px 20px; border-radius:8px; cursor:pointer;">Cancel</button>
-        <button type="submit" class="btn primary" style="padding:12px 24px;">Save Changes</button>
-      </div>
-    </form>
-  </div>
-</div>
+  </section>
+</main>
 
 <script src="common.js"></script>
+
 <script>
-  // 1. Get current logged-in user
-  let user = JSON.parse(localStorage.getItem("loggedInUser"));
-  if (!user) window.location.href = "login.html";
+const user = JSON.parse(localStorage.getItem("loggedInUser"));
+if (!user) { 
+  alert("Please login first");
+  window.location.href = "login.html";
+}
 
-  function updateUI() {
-    document.getElementById("pNameLarge").textContent = user.name || "User Name";
-    document.getElementById("pEmailSmall").textContent = user.email;
-    document.getElementById("pPhone").textContent = user.phone || "Not Provided";
-    document.getElementById("pGender").textContent = user.gender || "Not Provided";
-    document.getElementById("pAddress").textContent = user.address || "Not Provided";
-    
-    // Update Circle Initial
-    const initialSource = user.name || user.email || "U";
-    document.getElementById("userInitial").textContent = initialSource.charAt(0).toUpperCase();
-    
-    if (window.feather) feather.replace();
-  }
-
-  const modal = document.getElementById("editModal");
-  
-  // 2. Open Modal with current values
-  document.getElementById("editProfileBtn").onclick = () => {
-    document.getElementById("editName").value = user.name || "";
-    document.getElementById("editEmail").value = user.email || ""; // Now editable
-    document.getElementById("editPhone").value = user.phone || "";
-    document.getElementById("editAddress").value = user.address || "";
-    modal.style.display = "flex";
-  }
-
-  function closeModal() { modal.style.display = "none"; }
-
-  // 3. Save Changes
-  document.getElementById("editForm").onsubmit = (e) => {
-    e.preventDefault();
-    
-    const oldEmail = user.email;
-    const newEmail = document.getElementById("editEmail").value;
-
-    // Update Local Object
-    user.name = document.getElementById("editName").value;
-    user.email = newEmail;
-    user.phone = document.getElementById("editPhone").value;
-    user.address = document.getElementById("editAddress").value;
-
-    // Update 'loggedInUser' session
-    localStorage.setItem("loggedInUser", JSON.stringify(user));
-
-    // Update 'users' database to keep it in sync
-    let allUsers = JSON.parse(localStorage.getItem("users")) || [];
-    const userIndex = allUsers.findIndex(u => u.email === oldEmail);
-    
-    if (userIndex !== -1) {
-      allUsers[userIndex] = { ...allUsers[userIndex], ...user };
-      localStorage.setItem("users", JSON.stringify(allUsers));
-    }
-
-    updateUI();
-    closeModal();
-    alert("Profile and Email updated successfully!");
-  };
-
-  window.onclick = (e) => { if(e.target == modal) closeModal(); }
-  updateUI();
+document.getElementById("pName").textContent = user.name || "";
+document.getElementById("pEmail").textContent = user.email || "";
+document.getElementById("pPhone").textContent = user.phone || "";
+document.getElementById("pGender").textContent = user.gender || "";
+document.getElementById("pAddress").textContent = user.address || "";
 </script>
+
 </body>
 </html>
