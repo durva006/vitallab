@@ -27,4 +27,5 @@ public class User {
 
     @Column(length = 255)
     private String address;
+    private String reportStatus = "Pending"; // Default status for new signups
 }

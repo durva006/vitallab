@@ -4,12 +4,11 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Reports — Vital Lab</title>
+   <link rel="stylesheet" href="styles.css">
 
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Montserrat:wght@800&display=swap" rel="stylesheet">
   
   <script src="https://unpkg.com/feather-icons"></script>
-  
-  <link rel="stylesheet" href="styles.css">
 
   <style>
     * { font-family: 'Inter', sans-serif !important; box-sizing: border-box; }
@@ -169,30 +168,98 @@
 
   <script src="common.js"></script>
   <script>
+
     // 1. SCIENTIFIC DATA SYSTEM
     const testDatabase = {
-      "CBC (Complete Blood Count)": [
-        { param: "Hemoglobin", unit: "g/dL", min: 13.5, max: 17.5 },
-        { param: "WBC Count", unit: "cells/mcL", min: 4500, max: 11000 },
-        { param: "Platelet Count", unit: "Lakhs/mcL", min: 1.5, max: 4.5 },
-        { param: "RBC Count", unit: "million/mcL", min: 4.7, max: 6.1 }
-      ],
-      "Lipid Profile": [
-        { param: "Total Cholesterol", unit: "mg/dL", min: 125, max: 200 },
-        { param: "HDL (Good) Cholesterol", unit: "mg/dL", min: 40, max: 60 },
-        { param: "LDL (Bad) Cholesterol", unit: "mg/dL", min: 0, max: 100 },
-        { param: "Triglycerides", unit: "mg/dL", min: 0, max: 150 }
-      ],
-      "Thyroid Profile": [
-        { param: "TSH", unit: "mIU/L", min: 0.4, max: 4.0 },
-        { param: "T3 (Total)", unit: "ng/dL", min: 80, max: 200 },
-        { param: "T4 (Total)", unit: "mcg/dL", min: 5.0, max: 12.0 }
-      ],
-      "Default": [
-        { param: "Glucose (Random)", unit: "mg/dL", min: 70, max: 140 },
-        { param: "Calcium", unit: "mg/dL", min: 8.5, max: 10.2 }
-      ]
-    };
+
+  "Basic Health Check": [
+    { param: "Hemoglobin", unit: "g/dL", min: 12, max: 16 },
+    { param: "Blood Sugar (Fasting)", unit: "mg/dL", min: 70, max: 100 },
+    { param: "BMI", unit: "kg/m²", min: 18.5, max: 24.9 }
+  ],
+
+  "Full Body Checkup": [
+    { param: "Hemoglobin", unit: "g/dL", min: 12, max: 16 },
+    { param: "WBC Count", unit: "cells/mcL", min: 4500, max: 11000 },
+    { param: "Platelet Count", unit: "Lakhs/mcL", min: 1.5, max: 4.5 },
+    { param: "Creatinine", unit: "mg/dL", min: 0.7, max: 1.3 },
+    { param: "Total Cholesterol", unit: "mg/dL", min: 125, max: 200 },
+    { param: "TSH", unit: "mIU/L", min: 0.4, max: 4.0 },
+    { param: "Vitamin D", unit: "ng/mL", min: 20, max: 50 },
+    { param: "Vitamin B12", unit: "pg/mL", min: 200, max: 900 }
+  ],
+
+  "Cardiac Care": [
+    { param: "Total Cholesterol", unit: "mg/dL", min: 125, max: 200 },
+    { param: "LDL Cholesterol", unit: "mg/dL", min: 0, max: 100 },
+    { param: "HDL Cholesterol", unit: "mg/dL", min: 40, max: 60 },
+    { param: "Triglycerides", unit: "mg/dL", min: 0, max: 150 },
+    { param: "CRP", unit: "mg/L", min: 0, max: 3 }
+  ],
+
+  "Diabetes Management": [
+    { param: "HbA1c", unit: "%", min: 4.0, max: 5.6 },
+    { param: "Fasting Blood Sugar", unit: "mg/dL", min: 70, max: 100 },
+    { param: "Insulin", unit: "µIU/mL", min: 2, max: 25 },
+    { param: "Creatinine", unit: "mg/dL", min: 0.7, max: 1.3 }
+  ],
+
+  "Thyroid Profile": [
+    { param: "TSH", unit: "mIU/L", min: 0.4, max: 4.0 },
+    { param: "T3", unit: "ng/dL", min: 80, max: 200 },
+    { param: "T4", unit: "mcg/dL", min: 5, max: 12 }
+  ],
+
+  "Women’s Wellness": [
+    { param: "Estrogen", unit: "pg/mL", min: 30, max: 400 },
+    { param: "Progesterone", unit: "ng/mL", min: 1, max: 20 },
+    { param: "TSH", unit: "mIU/L", min: 0.4, max: 4.0 },
+    { param: "Vitamin D", unit: "ng/mL", min: 20, max: 50 },
+    { param: "Iron", unit: "µg/dL", min: 50, max: 170 }
+  ],
+
+  "Senior Citizen Male": [
+    { param: "PSA", unit: "ng/mL", min: 0, max: 4 },
+    { param: "Calcium", unit: "mg/dL", min: 8.5, max: 10.2 },
+    { param: "Vitamin D", unit: "ng/mL", min: 20, max: 50 },
+    { param: "Cholesterol", unit: "mg/dL", min: 125, max: 200 }
+  ],
+
+  "Immunity Screen": [
+    { param: "Vitamin C", unit: "mg/dL", min: 0.4, max: 2.0 },
+    { param: "Zinc", unit: "µg/dL", min: 70, max: 120 },
+    { param: "Vitamin D3", unit: "ng/mL", min: 20, max: 50 },
+    { param: "Immunoglobulin (IgG)", unit: "mg/dL", min: 700, max: 1600 }
+  ],
+
+  "Liver Function (LFT)": [
+    { param: "Bilirubin", unit: "mg/dL", min: 0.1, max: 1.2 },
+    { param: "SGOT (AST)", unit: "U/L", min: 10, max: 40 },
+    { param: "SGPT (ALT)", unit: "U/L", min: 7, max: 56 },
+    { param: "Albumin", unit: "g/dL", min: 3.5, max: 5.0 }
+  ]
+
+};
+
+ function generateDoctorRemarks(params, generatedValues) {
+  let remarks = [];
+
+  params.forEach((p, index) => {
+    const value = generatedValues[index];
+
+    if (value < p.min) {
+      remarks.push(`${p.param} is below normal range.`);
+    } else if (value > p.max) {
+      remarks.push(`${p.param} is higher than normal.`);
+    }
+  });
+
+  if (remarks.length === 0) {
+    return "All parameters are within normal limits. Maintain a healthy lifestyle.";
+  }
+
+  return remarks.join(" ");
+}
 
     // 2. GENERATE AND RENDER
     document.addEventListener("DOMContentLoaded", () => {
@@ -236,28 +303,46 @@
       document.getElementById("viewGender").textContent = user.gender || "Not Provided";
       
       // Get params from DB or use default
-      const params = testDatabase[testName] || testDatabase["Default"];
-      tbody.innerHTML = "";
+     const normalizedTestName = Object.keys(testDatabase).find(
+     key => key.toLowerCase() === testName.toLowerCase()
+      );
 
-      params.forEach(p => {
-        // Generate scientific value: (Random between min-10% and max+10% to make it look real)
-        const range = p.max - p.min;
-        const val = (p.min + (Math.random() * range)).toFixed(1);
-        const isHigh = val > p.max;
+     const params = testDatabase[testName];
 
-        tbody.innerHTML += `
-          <tr>
-            <td><strong>${p.param}</strong></td>
-            <td style="color: ${isHigh ? '#b91c1c' : '#1e293b'}; font-weight: ${isHigh ? '700' : '500'}">
-              ${val} ${isHigh ? '▲' : ''}
-            </td>
-            <td>${p.unit}</td>
-            <td class="muted" style="font-size: 0.8rem">${p.min} - ${p.max}</td>
-          </tr>
-        `;
-      });
+if (!params) {
+  alert("No report data available for this test yet.");
+  return;
+}
 
+tbody.innerHTML = "";
+
+let generatedValues = [];
+
+params.forEach(p => {
+  const range = p.max - p.min;
+
+  // Slight randomness (can go abnormal)
+  const val = parseFloat((p.min + (Math.random() * range * 1.4)).toFixed(1));
+  generatedValues.push(val);
+
+  const isHigh = val > p.max;
+  const isLow = val < p.min;
+
+  tbody.innerHTML += `
+    <tr>
+      <td><strong>${p.param}</strong></td>
+      <td style="color: ${isHigh ? '#b91c1c' : isLow ? '#ca8a04' : '#1e293b'}; font-weight: 600">
+        ${val} ${isHigh ? '▲' : isLow ? '▼' : ''}
+      </td>
+      <td>${p.unit}</td>
+      <td class="muted" style="font-size: 0.8rem">${p.min} - ${p.max}</td>
+    </tr>
+   `;
+   });
       modal.style.display = "block";
+
+      const remarks = generateDoctorRemarks(params, generatedValues);
+     document.getElementById("doctorRemarks").textContent = remarks;
     }
 
     function closeModal() {

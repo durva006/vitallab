@@ -5,11 +5,11 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Sign Up — Vital Lab</title>
 
+  <link rel="stylesheet" href="styles.css">
+
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Montserrat:wght@800&display=swap" rel="stylesheet">
   
   <script src="https://unpkg.com/feather-icons"></script>
-  
-  <link rel="stylesheet" href="styles.css">
 
   <style>
     * { font-family: 'Inter', sans-serif !important; box-sizing: border-box; }
@@ -37,12 +37,12 @@
       font-size: 1rem;
     }
 
-    /* Mobile Responsive */
     @media (max-width: 600px) {
       .grid-form { grid-template-columns: 1fr; }
     }
   </style>
 </head>
+
 <body data-page="signup">
 
   <header class="site-header">
@@ -59,6 +59,7 @@
 
   <main class="page">
     <section class="card wide-card" style="max-width: 800px; margin: 40px auto; padding: 40px; background: white; border-radius: 16px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">
+
       <div style="text-align: center; margin-bottom: 30px;">
         <div style="background: #eff6ff; width: 50px; height: 50px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 15px;">
           <i data-feather="user-plus" style="color: #2563eb;"></i>
@@ -68,12 +69,17 @@
       </div>
 
       <form id="signupForm" class="grid-form">
-        <label>Full Name
-          <input type="text" id="signupName" placeholder="e.g. John Doe" required>
+
+        <label>First Name
+          <input type="text" id="signupName" placeholder="e.g. Mira" required>
         </label>
 
-        <label>Email Address
-          <input type="email" id="signupEmail" placeholder="john@example.com" required>
+        <label>Last Name
+          <input type="text" id="signupName" placeholder="e.g. Mehta" required>
+        </label>
+
+        <label>Email <Address></Address>
+          <input type="email" id="signupEmail" placeholder="xyz@example.com" required>
         </label>
 
         <label>Phone Number
@@ -87,6 +93,10 @@
             <option>Male</option>
             <option>Other</option>
           </select>
+        </label>
+
+        <label>Date of Birth
+          <input type="date" id="dob" required>
         </label>
 
         <label style="grid-column: 1 / -1;">Home Address
@@ -106,60 +116,116 @@
             Create Account
           </button>
           <p class="muted" style="text-align: center; margin-top: 20px;">
-            Already have an account? <a href="login.html" style="color: #2563eb; font-weight: 600; text-decoration: none;">Log In</a>
+            Already have an account? 
+            <a href="login.html" style="color: #2563eb; font-weight: 600; text-decoration: none;">Log In</a>
           </p>
         </div>
+
       </form>
     </section>
   </main>
 
-  <script src="common.js"></script>
   <script>
-    document.addEventListener("DOMContentLoaded", function() {
-      if (window.feather) feather.replace();
+  document.addEventListener("DOMContentLoaded", function() {
 
-      document.getElementById("signupForm").addEventListener("submit", async function(e) {
-        e.preventDefault();
+    // ✅ FIX: icons not showing
+    if (window.feather) feather.replace();
 
-        const password = document.getElementById("signupPassword").value;
-        const confirm = document.getElementById("confirmPassword").value;
+    const form = document.getElementById("signupForm");
 
-        // Validation: Passwords must match
-        if (password !== confirm) {
-          alert("⚠️ Passwords do not match!");
-          return;
+    form.addEventListener("submit", async function(e) {
+      e.preventDefault();
+
+      const password = document.getElementById("signupPassword").value.trim();
+      const confirm = document.getElementById("confirmPassword").value.trim();
+
+      if (password !== confirm) {
+        alert("⚠️ Passwords do not match!");
+        return;
+      }
+
+      const dobInput = document.getElementById("dob").value;
+
+      if (!dobInput) {
+        alert("⚠️ Please select your Date of Birth");
+        return;
+      }
+
+      // ✅ AGE CALCULATION
+      function calculateAge(dob) {
+        const birthDate = new Date(dob);
+        const today = new Date();
+
+        let age = today.getFullYear() - birthDate.getFullYear();
+        const m = today.getMonth() - birthDate.getMonth();
+
+        if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+          age--;
         }
 
-        const user = {
-          name: document.getElementById("signupName").value,
-          email: document.getElementById("signupEmail").value,
-          password: password,
-          phone: document.getElementById("signupPhone").value,
-          gender: document.getElementById("signupGender").value,
-          address: document.getElementById("signupAddress").value
-        };
+        return age;
+      }
 
-        try {
-          const response = await fetch("http://localhost:8080/api/users/register", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(user)
-          });
+      const age = calculateAge(dobInput);
 
-          if (response.ok) {
-            alert("🎉 Account created successfully!");
-            document.getElementById("signupForm").reset();
-            window.location.href = "login.html";
-          } else {
-            const err = await response.json();
-            alert("⚠️ Error: " + (err.message || "Unable to register."));
-          }
-        } catch (error) {
-          console.error("Network or server error:", error);
-          alert("🚨 Failed to connect to server. Ensure your backend is running on port 8080.");
+      if (age < 0 || isNaN(age)) {
+        alert("⚠️ Invalid Date of Birth");
+        return;
+      }
+    
+      // ✅ EMAIL VALIDATION
+const email = document.getElementById("signupEmail").value.trim();
+const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+if (!emailRegex.test(email)) {
+  alert("⚠️ Enter a valid email address");
+  return;
+}
+
+// ✅ PHONE VALIDATION (Indian)
+const phone = document.getElementById("signupPhone").value.trim();
+const phoneRegex = /^[6-9]\d{9}$/;
+
+if (!phoneRegex.test(phone)) {
+  alert("⚠️ Enter valid 10-digit Indian phone number");
+  return;
+}
+
+      const user = {
+        name: document.getElementById("signupName").value.trim(),
+        email: document.getElementById("signupEmail").value.trim(),
+        password: password,
+        phone: document.getElementById("signupPhone").value.trim(),
+        gender: document.getElementById("signupGender").value,
+        address: document.getElementById("signupAddress").value.trim(),
+        dob: dobInput,
+        age: age
+      };
+
+      try {
+        const response = await fetch("http://localhost:8080/api/signup", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(user)
+        });
+
+        if (!response.ok) {
+          const err = await response.text();
+          throw new Error(err);
         }
-      });
+
+        alert("🎉 Account created successfully!");
+        form.reset();
+        window.location.href = "login.html";
+
+      } catch (error) {
+        console.error(error);
+        alert("⚠️ " + error.message);
+      }
+
     });
+
+  });
   </script>
 
 </body>

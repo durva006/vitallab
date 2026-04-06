@@ -4,14 +4,30 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Payment Receipt — Vital Lab</title>
+    <link rel="stylesheet" href="styles.css">
 
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Montserrat:wght@800&display=swap" rel="stylesheet">
   
   <script src="https://unpkg.com/feather-icons"></script>
-  
-  <link rel="stylesheet" href="styles.css">
 
   <style>
+
+   @media print {
+  * {
+    visibility: hidden;
+  }
+
+  .receipt-container, .receipt-container * {
+    visibility: visible;
+  }
+
+  .receipt-container {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+  }
+}
     * {
       font-family: 'Inter', sans-serif !important;
       box-sizing: border-box;
@@ -190,11 +206,16 @@
       const receiptId = sessionStorage.getItem("lastReceiptId");
 
       if (!lastBooking || !receiptId) {
-        alert("No recent transaction found.");
-        window.location.href = "dashboard.html";
-        return;
-      }
+  console.log("DEBUG:", lastBooking, receiptId);
 
+  document.getElementById("receiptContent").innerHTML = `
+    <div style="color:red; text-align:center; font-weight:600;">
+      ❌ No receipt data found.<br><br>
+      Try booking again.
+    </div>
+  `;
+  return;
+}
       // 2. Populate Receipt Details
       document.getElementById("rId").textContent = receiptId;
       document.getElementById("rDateTime").textContent = new Date().toLocaleString();
@@ -203,10 +224,7 @@
       document.getElementById("rUser").textContent = user ? user.name : "Guest User";
       document.getElementById("rAmount").textContent = `₹${lastBooking.price}`;
 
-      // 3. AUTO-DOWNLOAD (Triggers Print Dialog automatically)
-      setTimeout(() => {
-        window.print();
-      }, 1000);
+      console.log("Receipt Data:", lastBooking, receiptId);
     });
   </script>
 </body>

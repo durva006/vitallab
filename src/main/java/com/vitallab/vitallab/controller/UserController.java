@@ -18,7 +18,7 @@ public class UserController {
     private UserRepository userRepository;
 
     // Register new user
-    @PostMapping("/register")
+    @PostMapping("/signup")
     public ResponseEntity<?> register(@RequestBody User user) {
         Optional<User> existingUser = userRepository.findByEmail(user.getEmail());
         if (existingUser.isPresent()) {
@@ -45,15 +45,23 @@ public class UserController {
         }
     }
 
-    // Get all users
-    @GetMapping("/users")
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
-    }
+    @GetMapping("/all")
+public List<User> getAllUsers() {
+    return userRepository.findAll(); 
+    // This fetches every row from your 'users' table in PostgreSQL
+}
 
     // Get user by email
     @GetMapping("/users/{email}")
     public Optional<User> getUserByEmail(@PathVariable String email) {
         return userRepository.findByEmail(email);
     }
+
+    @PutMapping("/{id}/status")
+public User updateStatus(@PathVariable Long id, @RequestBody String status) {
+    User user = userRepository.findById(id).orElseThrow();
+    user.setReportStatus(status);
+    return userRepository.save(user);
+}
+    
 }

@@ -189,3 +189,25 @@ function loadProfileData() {
     const map = { "pName": u.name, "pEmail": u.email, "pPhone": u.phone, "pGender": u.gender, "pAddress": u.address };
     for (let id in map) if (document.getElementById(id)) document.getElementById(id).textContent = map[id] || "N/A";
 }
+
+async function loadAllUsers() {
+    try {
+        const response = await fetch('/api/users/all');
+        const users = await response.json();
+
+        const tableBody = document.getElementById('userTableBody');
+        tableBody.innerHTML = ''; // Clear old data
+
+        users.forEach(user => {
+            const row = `<tr>
+                <td>${user.id}</td>
+                <td>${user.fullName}</td>
+                <td>${user.email}</td>
+                <td><button class="delete-btn" onclick="deleteUser(${user.id})">Remove</button></td>
+            </tr>`;
+            tableBody.innerHTML += row;
+        });
+    } catch (error) {
+        console.error("Error loading users:", error);
+    }
+}

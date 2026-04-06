@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Vital Lab | Admin Login</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Montserrat:wght@800&display=swap" rel="stylesheet">
+    
+    <style>
+        .brand-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            justify-content: center;
+            margin-bottom: 25px;
+        }
+
+        .brand-logo-box {
+            background: #2563eb; 
+            color: white;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px; /* Matched to your screenshot */
+            font-weight: 800;
+            font-family: 'Montserrat', sans-serif !important;
+        }
+
+        .brand-text {
+            font-family: 'Montserrat', sans-serif !important;
+            font-weight: 800;
+            font-size: 1.4rem;
+            color: #1e293b;
+            letter-spacing: -0.04em; /* Tighter spacing like the image */
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f2f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .login-card {
+            background: white;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        h2 { color: #1e293b; margin-bottom: 10px; font-weight: 600; }
+        p { color: #64748b; margin-bottom: 30px; font-size: 0.9rem; }
+        
+        .input-group { text-align: left; margin-bottom: 20px; }
+        label { display: block; font-weight: 600; margin-bottom: 8px; color: #1e293b; font-size: 0.85rem; }
+        input { width: 100%; padding: 12px; border: 1px solid #e2e8f0; border-radius: 8px; box-sizing: border-box; font-size: 1rem; }
+        input:focus { outline: none; border-color: #2563eb; box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1); }
+
+        .btn-primary {
+            background-color: #2563eb;
+            color: white;
+            border: none;
+            width: 100%;
+            padding: 14px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .btn-primary:hover { background-color: #1d4ed8; }
+        .back-link { display: block; margin-top: 20px; color: #2563eb; text-decoration: none; font-size: 0.85rem; font-weight: 500; }
+    </style>
+</head>
+<body>
+    <div class="login-card">
+        <div class="brand-container">
+            <div class="brand-logo-box">V</div>
+            <span class="brand-text">VITAL<span style="color: #2563eb;">LAB</span></span>
+        </div>
+        <h2>Admin Access</h2>
+        <p>Enter your credentials to manage laboratory records.</p>
+        <form id="adminLoginForm">
+            <div class="input-group">
+                <label>Admin Username</label>
+                <input type="text" id="adminUser" required placeholder="admin">
+            </div>
+            <div class="input-group">
+                <label>Password</label>
+                <input type="password" id="adminPass" required placeholder="••••••••">
+            </div>
+            <button type="submit" class="btn-primary">Login to Dashboard</button>
+        </form>
+        <a href="index.html" class="back-link">← Back to Patient Site</a>
+    </div>
+
+    <script>
+        document.getElementById('adminLoginForm').onsubmit = function(e) {
+            e.preventDefault();
+            if(document.getElementById('adminUser').value === "admin" && 
+               document.getElementById('adminPass').value === "admin123") {
+                window.location.href = "admin.html";
+            } else {
+                alert("Invalid Admin Credentials!");
+            }
+        };
+    </script>
+</body>
+</html>

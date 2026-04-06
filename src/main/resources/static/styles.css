@@ -20,70 +20,43 @@ body {
   line-height: 1.6;
 }
 
-/* Header Refresher */
-/* --- MASTER NAV BAR LOCK --- */
+/* Quick Navbar Fix */
 .site-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 5%; /* Horizontal padding only */
-  height: 70px;   /* Fixed height prevents 'jumping' */
+  padding: 15px 5%;
   background: white;
   border-bottom: 1px solid #e2e8f0;
-  position: sticky;
-  top: 0;
-  z-index: 9999;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.03);
 }
 
 .brand-container {
   display: flex;
   align-items: center;
-  gap: 12px;
   text-decoration: none;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 800;
+  font-size: 1.2rem;
+  color: #1e293b;
 }
 
 .brand-logo-box {
   background: #2563eb;
   color: white;
-  width: 35px;
-  height: 35px;
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 800;
-  font-family: 'Montserrat', sans-serif;
-  font-size: 1.2rem;
-}
-
-.brand-text {
-  font-family: 'Montserrat', sans-serif;
-  font-weight: 800;
-  font-size: 1.4rem;
-  color: #1e293b;
-  letter-spacing: -0.5px;
-}
-
-.nav-menu {
-  display: flex;
-  gap: 30px;
-  align-items: center;
+  padding: 5px 12px;
+  border-radius: 6px;
+  margin-right: 10px;
 }
 
 .nav-link {
   text-decoration: none;
+  margin-left: 20px;
   color: #64748b;
-  font-family: 'Inter', sans-serif;
-  font-weight: 600;
-  font-size: 0.95rem;
-  transition: all 0.2s ease;
-  display: flex;
-  align-items: center;
-  gap: 6px;
+  font-weight: 500;
+  transition: color 0.2s;
 }
 
-.nav-link:hover, .nav-link.active {
+.nav-link:hover {
   color: #2563eb;
 }
 
@@ -204,10 +177,31 @@ input, select, textarea {
   pointer-events: none; /* Prevents clicking hidden inputs */
 }
 
-@media (min-width: 900px) {
-  #packageGrid {
-    grid-template-columns: 1fr 1fr; /* Two cards side-by-side on desktop */
-    align-items: start;
+@media print {
+
+  body * {
+    visibility: hidden;
+  }
+
+  #reportModal, #reportModal * {
+    visibility: visible;
+  }
+
+  #reportModal {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+  }
+
+  .report-paper {
+    margin: 0;
+    box-shadow: none;
+    width: 100%;
+  }
+
+  .no-print {
+    display: none !important;
   }
 }
 
@@ -293,3 +287,153 @@ input:focus { outline: 2px solid var(--primary-light); border-color: var(--prima
 
 /* Icons sizing */
 .feather { width: 18px; height: 18px; vertical-align: middle; margin-right: 4px; color: var(--primary); }
+
+
+/* --- Global Admin Reset --- */
+.admin-page {
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f0f2f5;
+}
+
+/* Navigation Bar */
+.main-nav {
+    background-color: #0056b3; /* Vital Lab Blue */
+    color: white;
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.nav-container {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    justify-content: space-between;
+}
+
+.nav-logo {
+    height: 40px;
+    filter: brightness(0) invert(1); /* Makes logo white if it's dark */
+}
+
+.nav-links a {
+    color: white;
+    text-decoration: none;
+    margin-left: 20px;
+    font-weight: 600;
+}
+
+/* Main Dashboard Layout */
+.content-wrapper {
+    max-width: 1100px;
+    margin: 40px auto;
+    padding: 20px;
+}
+
+.admin-header {
+    margin-bottom: 30px;
+    border-bottom: 2px solid #0056b3;
+    padding-bottom: 10px;
+}
+
+/* Table Card */
+.table-card {
+    background: white;
+    border-radius: 12px;
+    padding: 25px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+}
+
+.table-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+/* The Table Itself */
+.styled-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.95rem;
+}
+
+.styled-table thead tr {
+    background-color: #0056b3;
+    color: #ffffff;
+    text-align: left;
+}
+
+.styled-table th, .styled-table td {
+    padding: 15px 12px;
+}
+
+.styled-table tbody tr {
+    border-bottom: 1px solid #dddddd;
+}
+
+.styled-table tbody tr:nth-of-type(even) {
+    background-color: #f3f3f3;
+}
+
+.styled-table tbody tr:last-of-type {
+    border-bottom: 2px solid #0056b3;
+}
+
+/* Status & Buttons */
+.status-badge {
+    background-color: #d1e7dd;
+    color: #0f5132;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    font-weight: bold;
+}
+
+.btn-refresh {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.delete-btn {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+/* Add this to the BOTTOM of your styles.css */
+.brand-logo-box {
+  background: #2563eb !important;
+  color: white !important;
+  width: 36px !important;
+  height: 36px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-radius: 10px !important; 
+  font-weight: 800 !important;
+  font-family: 'Montserrat', sans-serif !important;
+  font-size: 1.2rem !important;
+}
+
+.brand-text {
+  font-family: 'Montserrat', sans-serif !important;
+  font-weight: 800 !important;
+  font-size: 1.4rem !important;
+  color: #1e293b !important;
+  letter-spacing: -0.04em !important;
+}
