@@ -3,7 +3,7 @@
  * Handles: Auth, Navigation, Dashboard Stats, and Medical Reports
  */
 
-const API_BASE = "https://vitallab.onrender.com/";
+const API_BASE = "https://vitallab.onrender.com";
 
 document.addEventListener("DOMContentLoaded", () => {
     // 1. Initialize Global UI (Icons, Nav, Logout)
@@ -76,7 +76,7 @@ function initSignupLogic() {
             address: document.getElementById("signupAddress").value
         };
         try {
-            const res = await fetch(`${API_BASE}/users/register`, {
+            const res = await fetch(`${API_BASE}/api/users/register`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(user)
@@ -95,7 +95,7 @@ function initLoginLogic() {
         const email = document.getElementById("loginEmail").value;
         const password = document.getElementById("loginPassword").value;
         try {
-            const res = await fetch(`${API_BASE}/users/login`, {
+            const res = await fetch(`${API_BASE}/api/users/login`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ email, password })
