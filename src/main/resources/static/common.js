@@ -3,7 +3,7 @@
  * Handles: Auth, Navigation, Dashboard Stats, and Medical Reports
  */
 
-const API_BASE = "http://localhost:8080/api";
+const API_BASE = "https://vitallab.onrender.com/";
 
 document.addEventListener("DOMContentLoaded", () => {
     // 1. Initialize Global UI (Icons, Nav, Logout)
