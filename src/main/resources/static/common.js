@@ -95,7 +95,7 @@ function initLoginLogic() {
         const email = document.getElementById("loginEmail").value;
         const password = document.getElementById("loginPassword").value;
         try {
-            const res = await fetch(`${API_BASE}/login`, {
+            const res = await fetch(`${API_BASE}/api/login`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ email, password })
