@@ -113,47 +113,5 @@
   </main>
 
   <script src="common.js"></script>
-
-<script>
-  document.addEventListener("DOMContentLoaded", () => {
-    if (window.feather) feather.replace();
-
-    const loginForm = document.getElementById("loginForm");
-
-    loginForm.onsubmit = async (e) => {
-      e.preventDefault();
-
-      const email = document.getElementById("loginEmail").value.trim();
-      const password = document.getElementById("loginPassword").value.trim();
-
-      try {
-        const response = await fetch("http://localhost:8080/api/login", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({ email, password })
-        });
-
-        if (!response.ok) {
-          const err = await response.text();
-          throw new Error(err);
-        }
-
-        const user = await response.json();
-
-        // Store logged in user
-        localStorage.setItem("loggedInUser", JSON.stringify(user));
-
-        alert("Login successful!");
-        window.location.href = "dashboard.html";
-
-      } catch (error) {
-        console.error("Login error:", error);
-        alert("⚠️ " + error.message);
-      }
-    };
-  });
-</script>
 </body>
 </html>
