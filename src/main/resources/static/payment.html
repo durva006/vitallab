@@ -263,7 +263,7 @@
         const receiptId = "REC-" + Math.floor(Math.random() * 1000000);
 
         try {
-          const res = await fetch("https://vitallab.onrender.com/api/bookings/create", {
+          const res = await fetch("http://vitallab.onrender.com/api/bookings/create", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
