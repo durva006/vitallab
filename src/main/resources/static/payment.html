@@ -1,17 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Payment — Vital Lab</title>
   <link rel="stylesheet" href="styles.css">
 
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Montserrat:wght@800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Montserrat:wght@800&display=swap"
+    rel="stylesheet">
   <script src="https://unpkg.com/feather-icons"></script>
 
   <style>
-    * { font-family: 'Inter', sans-serif !important; box-sizing: border-box; }
-    body { margin: 0; background-color: #f8fafc; color: #1e293b; }
+    * {
+      font-family: 'Inter', sans-serif !important;
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background-color: #f8fafc;
+      color: #1e293b;
+    }
 
     .narrow-card {
       max-width: 500px;
@@ -19,7 +29,7 @@
       background: white;
       padding: 30px;
       border-radius: 16px;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
       border: 1px solid #e2e8f0;
     }
 
@@ -67,231 +77,232 @@
 
 <body data-page="payment">
 
-<header class="site-header">
-  <a href="dashboard.html" class="brand-container">
-    <div class="brand-logo-box">V</div>
-    <span class="brand-text">VITAL<span style="color: #2563eb;">LAB</span></span>
-  </a>
+  <header class="site-header">
+    <a href="dashboard.html" class="brand-container">
+      <div class="brand-logo-box">V</div>
+      <span class="brand-text">VITAL<span style="color: #2563eb;">LAB</span></span>
+    </a>
 
-  <nav class="nav-menu">
-    <a href="dashboard.html" class="nav-link">Dashboard</a>
-    <a href="booking.html" class="nav-link">Book Test</a>
-    <a href="reports.html" class="nav-link">Reports</a>
-    <button id="globalLogoutBtn" class="logout-btn">Logout</button>
-  </nav>
-</header>
+    <nav class="nav-menu">
+      <a href="dashboard.html" class="nav-link">Dashboard</a>
+      <a href="booking.html" class="nav-link">Book Test</a>
+      <a href="reports.html" class="nav-link">Reports</a>
+      <button id="globalLogoutBtn" class="logout-btn">Logout</button>
+    </nav>
+  </header>
 
-<main class="page">
-  <section class="narrow-card">
+  <main class="page">
+    <section class="narrow-card">
 
-    <h1 style="font-family: 'Montserrat'; display:flex; gap:10px;">
-      <i data-feather="credit-card"></i> Checkout
-    </h1>
+      <h1 style="font-family: 'Montserrat'; display:flex; gap:10px;">
+        <i data-feather="credit-card"></i> Checkout
+      </h1>
 
-    <!-- SUMMARY -->
-    <div id="pendingInfo" class="summary-box">
-      <div id="summaryDetails">Loading...</div>
-    </div>
-
-    <form id="paymentForm" class="stack-form">
-
-      <!-- PAYMENT METHOD -->
-      <label>Select Payment Method</label>
-      <div style="display:flex; gap:15px; margin-bottom:20px;">
-        <label><input type="radio" name="paymentMethod" value="card" checked> 💳 Card</label>
-        <label><input type="radio" name="paymentMethod" value="upi"> 📱 UPI</label>
-        <label><input type="radio" name="paymentMethod" value="cash"> 💵 Pay at Visit</label>
+      <!-- SUMMARY -->
+      <div id="pendingInfo" class="summary-box">
+        <div id="summaryDetails">Loading...</div>
       </div>
 
-      <!-- CARD -->
-      <div id="cardFields">
-        <label>Cardholder Name
-          <input type="text" id="cardName">
-        </label>
+      <form id="paymentForm" class="stack-form">
 
-        <label>Card Number
-          <input type="text" id="cardNumber">
-        </label>
+        <!-- PAYMENT METHOD -->
+        <label>Select Payment Method</label>
+        <div style="display:flex; gap:15px; margin-bottom:20px;">
+          <label><input type="radio" name="paymentMethod" value="card" checked> 💳 Card</label>
+          <label><input type="radio" name="paymentMethod" value="upi"> 📱 UPI</label>
+          <label><input type="radio" name="paymentMethod" value="cash"> 💵 Pay at Visit</label>
+        </div>
 
-        <div class="two-col">
-          <label>Expiry
-            <input type="text" id="cardExp">
+        <!-- CARD -->
+        <div id="cardFields">
+          <label>Cardholder Name
+            <input type="text" id="cardName">
           </label>
-          <label>CVC
-            <input type="text" id="cardCvc">
+
+          <label>Card Number
+            <input type="text" id="cardNumber">
+          </label>
+
+          <div class="two-col">
+            <label>Expiry
+              <input type="text" id="cardExp">
+            </label>
+            <label>CVC
+              <input type="text" id="cardCvc">
+            </label>
+          </div>
+        </div>
+
+        <!-- UPI -->
+        <div id="upiFields" style="display:none;">
+          <label>UPI ID
+            <input type="text" id="upiId" placeholder="name@upi">
           </label>
         </div>
+
+        <!-- CASH -->
+        <div id="cashInfo" style="display:none; font-size:0.9rem; color:#64748b;">
+          Pay directly at the lab during your visit.
+        </div>
+
+        <button type="submit" class="btn primary" style="width:100%; margin-top:20px;">
+          Pay & Confirm Booking
+        </button>
+      </form>
+
+      <div class="secure-badge">
+        <i data-feather="lock"></i> Secure Payment
       </div>
 
-      <!-- UPI -->
-      <div id="upiFields" style="display:none;">
-        <label>UPI ID
-          <input type="text" id="upiId" placeholder="name@upi">
-        </label>
-      </div>
+    </section>
+  </main>
 
-      <!-- CASH -->
-      <div id="cashInfo" style="display:none; font-size:0.9rem; color:#64748b;">
-        Pay directly at the lab during your visit.
-      </div>
+  <script src="common.js"></script>
 
-      <button type="submit" class="btn primary" style="width:100%; margin-top:20px;">
-        Pay & Confirm Booking
-      </button>
-    </form>
+  <script>
 
-    <div class="secure-badge">
-      <i data-feather="lock"></i> Secure Payment
-    </div>
+    // ✅ CARD VALIDATION (Luhn Algorithm)
+    function isValidCard(number) {
+      number = number.replace(/\s/g, "");
 
-  </section>
-</main>
+      if (!/^\d{16}$/.test(number)) return false;
 
-<script src="common.js"></script>
+      let sum = 0;
+      let shouldDouble = false;
 
-<script>
+      for (let i = number.length - 1; i >= 0; i--) {
+        let digit = parseInt(number[i]);
 
-// ✅ CARD VALIDATION (Luhn Algorithm)
-function isValidCard(number) {
-  number = number.replace(/\s/g, "");
+        if (shouldDouble) {
+          digit *= 2;
+          if (digit > 9) digit -= 9;
+        }
 
-  if (!/^\d{16}$/.test(number)) return false;
+        sum += digit;
+        shouldDouble = !shouldDouble;
+      }
 
-  let sum = 0;
-  let shouldDouble = false;
-
-  for (let i = number.length - 1; i >= 0; i--) {
-    let digit = parseInt(number[i]);
-
-    if (shouldDouble) {
-      digit *= 2;
-      if (digit > 9) digit -= 9;
+      return sum % 10 === 0;
     }
 
-    sum += digit;
-    shouldDouble = !shouldDouble;
-  }
+    document.addEventListener("DOMContentLoaded", function () {
 
-  return sum % 10 === 0;
-}
+      if (window.feather) feather.replace();
 
-document.addEventListener("DOMContentLoaded", function () {
+      const user = JSON.parse(localStorage.getItem("loggedInUser"));
+      const pending = JSON.parse(sessionStorage.getItem("pendingBooking"));
 
-  if (window.feather) feather.replace();
+      if (!user || !pending) {
+        alert("Session expired");
+        window.location.href = "booking.html";
+        return;
+      }
 
-  const user = JSON.parse(localStorage.getItem("loggedInUser"));
-  const pending = JSON.parse(sessionStorage.getItem("pendingBooking"));
-
-  if (!user || !pending) {
-    alert("Session expired");
-    window.location.href = "booking.html";
-    return;
-  }
-
-  // SHOW SUMMARY
-  document.getElementById("summaryDetails").innerHTML = `
+      // SHOW SUMMARY
+      document.getElementById("summaryDetails").innerHTML = `
   <b>${pending.testName}</b><br>
   ${pending.date} at ${pending.time}<br>
   <span style="color:#2563eb; font-weight:800;">₹${pending.price}</span>
 `;
 
-  // SWITCH UI
-  document.querySelectorAll('input[name="paymentMethod"]').forEach(radio => {
-    radio.addEventListener("change", function () {
-      const val = this.value;
+      // SWITCH UI
+      document.querySelectorAll('input[name="paymentMethod"]').forEach(radio => {
+        radio.addEventListener("change", function () {
+          const val = this.value;
 
-      document.getElementById("cardFields").style.display = val === "card" ? "block" : "none";
-      document.getElementById("upiFields").style.display = val === "upi" ? "block" : "none";
-      document.getElementById("cashInfo").style.display = val === "cash" ? "block" : "none";
+          document.getElementById("cardFields").style.display = val === "card" ? "block" : "none";
+          document.getElementById("upiFields").style.display = val === "upi" ? "block" : "none";
+          document.getElementById("cashInfo").style.display = val === "cash" ? "block" : "none";
+        });
+      });
+
+      // SUBMIT
+      document.getElementById("paymentForm").addEventListener("submit", async function (e) {
+        e.preventDefault(); // ✅ FIRST LINE
+
+        const method = document.querySelector('input[name="paymentMethod"]:checked').value;
+
+        const cardNumber = document.getElementById("cardNumber").value.trim();
+        const exp = document.getElementById("cardExp").value.trim();
+        const cvc = document.getElementById("cardCvc").value.trim();
+
+        // CARD VALIDATION (only if card selected)
+        if (method === "card") {
+          if (!isValidCard(cardNumber)) {
+            alert("⚠️ Invalid card number");
+            return;
+          }
+
+          const [month, year] = exp.split("/");
+          if (!month || !year) {
+            alert("⚠️ Enter valid expiry date");
+            return;
+          }
+
+          const expiryDate = new Date(`20${year}`, month);
+          if (expiryDate < new Date()) {
+            alert("⚠️ Card expired");
+            return;
+          }
+
+          if (!/^\d{3}$/.test(cvc)) {
+            alert("⚠️ Invalid CVC");
+            return;
+          }
+        }
+
+        if (method === "upi" && !document.getElementById("upiId").value.trim()) {
+          alert("Enter UPI ID");
+          return;
+        }
+
+        const btn = e.target.querySelector("button");
+        btn.disabled = true;
+        btn.textContent = "Processing...";
+
+        const receiptId = "REC-" + Math.floor(Math.random() * 1000000);
+
+        try {
+          const res = await fetch("http://vitallab.onrender.com/api/bookings/create", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              testName: pending.testName,
+              date: pending.date,
+              status: "confirmed",
+              price: pending.price,
+              paymentMethod: method,
+              user: { id: user.id }
+            })
+          });
+
+          if (!res.ok) throw new Error(await res.text());
+
+          let allBookings = JSON.parse(localStorage.getItem("bookings")) || [];
+
+          allBookings.push({
+            ...pending,
+            status: "Ready",
+            receiptId: receiptId
+          });
+
+          localStorage.setItem("bookings", JSON.stringify(allBookings));
+
+          sessionStorage.setItem("lastBooking", JSON.stringify(pending));
+          sessionStorage.setItem("lastReceiptId", receiptId);
+
+          alert("Payment Successful!");
+          window.location.href = "receipt.html";
+
+        } catch (err) {
+          alert("Error: " + err.message);
+          btn.disabled = false;
+          btn.textContent = "Pay & Confirm Booking";
+        }
+      });
     });
-  });
-
-  // SUBMIT
-  document.getElementById("paymentForm").addEventListener("submit", async function (e) {
-  e.preventDefault(); // ✅ FIRST LINE
-
-  const method = document.querySelector('input[name="paymentMethod"]:checked').value;
-
-  const cardNumber = document.getElementById("cardNumber").value.trim();
-  const exp = document.getElementById("cardExp").value.trim();
-  const cvc = document.getElementById("cardCvc").value.trim();
-
-  // CARD VALIDATION (only if card selected)
-  if (method === "card") {
-    if (!isValidCard(cardNumber)) {
-      alert("⚠️ Invalid card number");
-      return;
-    }
-
-    const [month, year] = exp.split("/");
-    if (!month || !year) {
-      alert("⚠️ Enter valid expiry date");
-      return;
-    }
-
-    const expiryDate = new Date(`20${year}`, month);
-    if (expiryDate < new Date()) {
-      alert("⚠️ Card expired");
-      return;
-    }
-
-    if (!/^\d{3}$/.test(cvc)) {
-      alert("⚠️ Invalid CVC");
-      return;
-    }
-  }
-
-  if (method === "upi" && !document.getElementById("upiId").value.trim()) {
-    alert("Enter UPI ID");
-    return;
-  }
-
-  const btn = e.target.querySelector("button");
-  btn.disabled = true;
-  btn.textContent = "Processing...";
-
-  const receiptId = "REC-" + Math.floor(Math.random() * 1000000);
-
-  try {
-    const res = await fetch("http://localhost:8080/api/bookings/create", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        testName: pending.testName,
-        date: pending.date,
-        status: "confirmed",
-        price: pending.price,
-        paymentMethod: method,
-        user: { id: user.id }
-      })
-    });
-
-    if (!res.ok) throw new Error(await res.text());
-
-    let allBookings = JSON.parse(localStorage.getItem("bookings")) || [];
-
-    allBookings.push({
-      ...pending,
-      status: "Ready",
-      receiptId: receiptId
-    });
-
-    localStorage.setItem("bookings", JSON.stringify(allBookings));
-
-    sessionStorage.setItem("lastBooking", JSON.stringify(pending));
-    sessionStorage.setItem("lastReceiptId", receiptId);
-
-    alert("Payment Successful!");
-    window.location.href = "receipt.html";
-
-  } catch (err) {
-    alert("Error: " + err.message);
-    btn.disabled = false;
-    btn.textContent = "Pay & Confirm Booking";
-  }
-});
-});
-</script>
+  </script>
 
 </body>
+
 </html>

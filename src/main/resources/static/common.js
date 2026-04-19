@@ -3,7 +3,7 @@
  * Handles: Auth, Navigation, Dashboard Stats, and Medical Reports
  */
 
-const API_BASE = "https://vitallab.onrender.com";
+const API_BASE = "http://localhost:8080";
 
 document.addEventListener("DOMContentLoaded", () => {
     // 1. Initialize Global UI (Icons, Nav, Logout)
@@ -117,7 +117,7 @@ function loadDashboardData() {
     
     document.getElementById("dashUserName").textContent = user.name;
 
-    fetch(`${API_BASE}/bookings/user/${user.id}`)
+    fetch(`${API_BASE}/api/bookings/user/${user.id}`)
         .then(res => res.json())
         .then(data => {
             document.getElementById("statTotalBookings").textContent = data.length;
@@ -139,7 +139,7 @@ function loadReportsPage() {
     const list = document.getElementById("reportList");
     if (!user || !list) return;
 
-    fetch(`${API_BASE}/bookings/user/${user.id}`)
+    fetch(`${API_BASE}/api/bookings/user/${user.id}`)
         .then(res => res.json())
         .then(data => {
             if (data.length === 0) { list.innerHTML = "<li>No reports found.</li>"; return; }
