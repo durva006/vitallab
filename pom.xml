@@ -32,10 +32,10 @@
 	<dependencies>
 	 <!-- Spring Boot Starter dependencies are already added -->
     
-    <!-- H2 Database -->
+    <!-- PostgreSQL Driver -->
     <dependency>
-        <groupId>com.h2database</groupId>
-        <artifactId>h2</artifactId>
+        <groupId>org.postgresql</groupId>
+        <artifactId>postgresql</artifactId>
         <scope>runtime</scope>
     </dependency>
 
