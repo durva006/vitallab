@@ -3,7 +3,7 @@
  * Handles: Auth, Navigation, Dashboard Stats, and Medical Reports
  */
 
-const API_BASE = "http://localhost:8080";
+const API_BASE = ""; // Use relative URLs so this works on any host (local or deployed)
 
 document.addEventListener("DOMContentLoaded", () => {
     // 1. Initialize Global UI (Icons, Nav, Logout)
