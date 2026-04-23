@@ -5,6 +5,7 @@ OVERVIEW:-
 This project is a full-stack web application that allows users to browse, book, and manage health checkup tests online. It is designed to simplify the process of scheduling diagnostic tests and accessing reports digitally.
 
 FEATURES:-
+
 -User Features:
 * User registration and login
 * Browse health checkup test catalog
@@ -12,6 +13,7 @@ FEATURES:-
 * View and manage profile
 * Access test reports
 * Payment interface (basic implementation)
+  
 -Admin Features:
 * Admin login page
 * Admin dashboard UI (currently not fully functional)
